@@ -195,7 +195,7 @@
             <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <span id="timerDisplay" class="font-mono font-bold text-sm tracking-wider text-slate-800">55:00</span>
+            <span id="timerDisplay" class="font-mono font-bold text-sm tracking-wider text-slate-800">1:30:00</span>
             <button onclick="toggleTimerVisibility()" id="timerToggleBtn" class="text-[11px] font-semibold text-cb-blue hover:underline pl-1">Hide</button>
         </div>
 
@@ -207,6 +207,9 @@
                 </svg>
                 <span id="fullscreenText">Full Screen</span>
             </button>
+            <span id="lockdownIndicator" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Monitored
+            </span>
             <button onclick="openReviewGrid()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg text-cb-blue bg-blue-50 hover:bg-blue-100 border border-blue-200 transition">
                 <span>📑</span> Review All (<span id="answeredCounter">0</span>/47)
             </button>
@@ -356,6 +359,28 @@
 </div>
 
 <!-- ========================================== -->
+<!-- 3b. PROCTORING & INTEGRITY LOCKOUT MODAL   -->
+<!-- ========================================== -->
+<div id="interruptionModal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border-2 border-rose-500 text-center space-y-4">
+        <div class="w-14 h-14 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto text-2xl font-black">
+            ⚠️
+        </div>
+        <h4 class="text-base font-black text-slate-900">Testing Interruption Detected</h4>
+        <p class="text-xs text-slate-600 leading-relaxed">
+            You exited full-screen mode or navigated away from the testing window. For exam integrity, all window deflections, tab switches, and app minimize events are logged on your diagnostic score report.
+        </p>
+        <div class="bg-rose-50 border border-rose-200 rounded-lg p-3 text-xs text-rose-800 font-semibold flex items-center justify-between">
+            <span>Security Incidents Logged:</span>
+            <span id="violationCounterBadge" class="font-mono font-bold text-sm px-2 py-0.5 rounded bg-rose-200 text-rose-900">1</span>
+        </div>
+        <button onclick="resumeExamFromInterruption()" class="w-full py-3 px-4 rounded-xl bg-cb-blue hover:bg-cb-blueHover text-white font-bold text-xs tracking-wide shadow-md transition">
+            Resume Secure Full-Screen Exam
+        </button>
+    </div>
+</div>
+
+<!-- ========================================== -->
 <!-- 4. DETAILED SAT SCORE REPORT VIEW          -->
 <!-- ========================================== -->
 <div id="reportView" class="hidden min-h-screen bg-slate-100 py-10 px-4 sm:px-6 lg:px-8">
@@ -435,6 +460,21 @@
                             Student exhibits strong mastery in 9th-grade conventions and literary analysis.
                         </p>
                     </div>
+                </div>
+
+                <!-- Academic Integrity & Proctoring Audit Banner -->
+                <div id="integrityAuditContainer" class="mt-6 p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl" id="integrityIcon">🛡️</span>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800">Proctoring & Browser Integrity Audit</h4>
+                                <span id="integrityIncidentPill" class="text-[10px] font-mono px-2 py-0.5 rounded font-bold"></span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 mt-0.5" id="integrityAuditDescription">Monitored tab switches, window blur events, and full-screen state.</p>
+                        </div>
+                    </div>
+                    <div id="integrityLogSummary" class="text-right text-xs font-mono text-slate-600"></div>
                 </div>
 
                 <!-- Domain Proficiency Breakdown Bars -->
@@ -1487,9 +1527,14 @@ let userAnswers = {}; // { questionId: selectedIndex or text }
 let flaggedQuestions = new Set();
 let examStarted = false;
 let examSubmitted = false;
-let timerSeconds = 55 * 60; // 55 minutes
+let timerSeconds = 90 * 60; // 1 hour 30 minutes (90 minutes total)
 let timerInterval = null;
 let timerHidden = false;
+
+// Proctoring & Academic Integrity Tracking
+let integrityViolations = 0;
+let violationLogs = [];
+let isInterruptionOpen = false;
 
 // Student Candidate Info Object
 let studentProfile = {
@@ -1529,6 +1574,9 @@ function startExam(e) {
     startTimer();
     renderCurrentQuestion();
     updateReviewPaletteGrid();
+
+    // Automatically engage fullscreen mode for standard SAT testing experience
+    toggleFullscreen();
 }
 
 // Timer Functions
@@ -1546,14 +1594,24 @@ function startTimer() {
 }
 
 function updateTimerDisplay() {
-    const mins = Math.floor(timerSeconds / 60);
+    const hrs = Math.floor(timerSeconds / 3600);
+    const mins = Math.floor((timerSeconds % 3600) / 60);
     const secs = timerSeconds % 60;
-    const formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    
+    let formatted;
+    if (hrs > 0) {
+        formatted = `${hrs}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    } else {
+        formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
     const displayEl = document.getElementById("timerDisplay");
     if (displayEl) {
         displayEl.textContent = formatted;
         if (timerSeconds < 300) { // under 5 min
             displayEl.classList.add("text-rose-600");
+        } else {
+            displayEl.classList.remove("text-rose-600");
         }
     }
 }
@@ -1847,33 +1905,56 @@ function generateDiagnosticReport() {
         "Reading: 'The Necklace'": { correct: 0, total: 10 }
     };
 
+    // Calculate accuracy and domain performance
     examQuestions.forEach(q => {
         if (q.type === "mcq") {
             const isCorrect = (userAnswers[q.id] === q.correct);
             if (isCorrect) totalCorrectMCQ++;
 
-            if (q.id <= 8) {
+            if (q.id >= 1 && q.id <= 8) {
                 if (isCorrect) domains["Grammar 1 (Action Verbs)"].correct++;
-            } else if (q.id <= 16) {
+            } else if (q.id >= 9 && q.id <= 16) {
                 if (isCorrect) domains["Grammar 2 (Linking Verbs)"].correct++;
-            } else if (q.id <= 24) {
+            } else if (q.id >= 17 && q.id <= 24) {
                 if (isCorrect) domains["Grammar 3 (Auxiliary / Helping Verbs)"].correct++;
-            } else if (q.id <= 34) {
+            } else if (q.id >= 25 && q.id <= 34) {
                 if (isCorrect) domains["Vocabulary Workshop"].correct++;
-            } else {
+            } else if (q.id >= 35 && q.id <= 44) {
                 if (isCorrect) domains["Reading: 'The Necklace'"].correct++;
             }
         }
     });
 
-    const rawPct = (totalCorrectMCQ / 44) * 100;
     document.getElementById("repTotalRaw").textContent = totalCorrectMCQ;
-    document.getElementById("repPercentage").textContent = `${rawPct.toFixed(1)}% Raw MCQ Accuracy`;
+    const accuracyPct = ((totalCorrectMCQ / 44) * 100).toFixed(1);
+    document.getElementById("repPercentage").textContent = `${accuracyPct}% Raw Accuracy`;
 
-    // Digital SAT Scaled Score Approximation (200 - 800 scale for 9th grade ELA module)
-    // 200 base + (ratio * 600)
+    // digital SAT Scaled Score Approximation (200 - 800 scale for 9th grade ELA module)
     const scaledScore = Math.round(200 + ((totalCorrectMCQ / 44) * 600));
     document.getElementById("repScaledScore").textContent = scaledScore;
+
+    // Academic Integrity Audit Report
+    const integrityAuditContainer = document.getElementById("integrityAuditContainer");
+    const integrityIcon = document.getElementById("integrityIcon");
+    const integrityIncidentPill = document.getElementById("integrityIncidentPill");
+    const integrityAuditDescription = document.getElementById("integrityAuditDescription");
+    const integrityLogSummary = document.getElementById("integrityLogSummary");
+
+    if (integrityViolations === 0) {
+        integrityAuditContainer.className = "mt-6 p-4 rounded-xl border border-emerald-200 bg-emerald-50/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3";
+        integrityIcon.textContent = "🛡️";
+        integrityIncidentPill.className = "text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
+        integrityIncidentPill.textContent = "VERIFIED CLEAN (0 INCIDENTS)";
+        integrityAuditDescription.textContent = "Candidate remained focused inside the secure test interface throughout the entire session.";
+        integrityLogSummary.innerHTML = `<span class="text-emerald-700 font-semibold text-xs">No unauthorized tab or window deflections</span>`;
+    } else {
+        integrityAuditContainer.className = "mt-6 p-4 rounded-xl border border-rose-200 bg-rose-50/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3";
+        integrityIcon.textContent = "⚠️";
+        integrityIncidentPill.className = "text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-rose-100 text-rose-800 border border-rose-300";
+        integrityIncidentPill.textContent = `${integrityViolations} INCIDENT(S) RECORDED`;
+        integrityAuditDescription.textContent = "Candidate lost focus, switched tabs, or exited the testing screen during the examination.";
+        integrityLogSummary.innerHTML = `<span class="text-rose-700 font-semibold text-xs">${integrityViolations} browser window deflection(s) logged</span>`;
+    }
 
     // Benchmark Badge
     const bBadge = document.getElementById("repBenchmarkBadge");
@@ -1990,6 +2071,70 @@ function generateDiagnosticReport() {
     tableBody.innerHTML = tableHtml;
 }
 
+// Dispatch Email with Complete Audit Log & Score Report to amankhan@smartstudygrid.com
+function sendAuditEmail() {
+    const teacherEmail = "amankhan@smartstudygrid.com";
+    const subject = `[Exam Audit & Results] ${studentProfile.name} (${studentProfile.id}) - Grade 9 English Final`;
+
+    let incidentDetails = "No security infractions recorded. Session verified clean (0 deflections).";
+    if (violationLogs.length > 0) {
+        incidentDetails = violationLogs.map((log, idx) => `  ${idx + 1}. [${log.timestamp}] ${log.reason}`).join("\n");
+    }
+
+    const scaledScore = document.getElementById("repScaledScore")?.textContent || "N/A";
+    const rawMCQ = document.getElementById("repTotalRaw")?.textContent || "0";
+    const pct = document.getElementById("repPercentage")?.textContent || "N/A";
+
+    const reportBody = `OFFICIAL GRADE 9 DIGITAL SAT ELA FINAL - AUDIT & SCORE REPORT
+=============================================================
+CANDIDATE INFORMATION:
+- Name:            ${studentProfile.name}
+- Student ID:      ${studentProfile.id}
+- Grade & Section: ${studentProfile.grade}
+- Exam Date:       ${studentProfile.date}
+- Session Code:    ${studentProfile.testCode}
+
+ACADEMIC INTEGRITY & PROCTORING AUDIT:
+-------------------------------------------------------------
+- Total Security Incidents: ${integrityViolations}
+- Status:                   ${integrityViolations === 0 ? "PASSED (Clean Session)" : "FLAGGED FOR PROCTOR REVIEW"}
+- Monitored Infractions:
+${incidentDetails}
+
+PERFORMANCE SUMMARY:
+-------------------------------------------------------------
+- Estimated SAT Scaled Score: ${scaledScore} / 800
+- Raw MCQ Correct:            ${rawMCQ} / 44 items
+- Raw Accuracy Rate:          ${pct}
+
+CONSTRUCTED SHORT-ANSWER RESPONSES:
+-------------------------------------------------------------
+[Item 45: Character Motivation & Pride]
+${userAnswers[45] || "[No Response Provided]"}
+
+[Item 46: Appearance vs. Reality Symbolism]
+${userAnswers[47] || userAnswers[46] || "[No Response Provided]"}
+
+[Item 47: Dynamic Character Transformation]
+${userAnswers[47] || "[No Response Provided]"}
+
+=============================================================
+Report automatically compiled by Grade 9 Assessment Suite.`;
+
+    const mailtoUrl = `mailto:${teacherEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(reportBody)}`;
+
+    // Show visual status toast
+    const toast = document.getElementById("emailNotificationToast");
+    const toastText = document.getElementById("emailNotificationText");
+    if (toast && toastText) {
+        toastText.textContent = `Audit report prepared for ${teacherEmail}. Launching your email client...`;
+        toast.classList.remove("hidden");
+    }
+
+    // Launch email client
+    window.location.href = mailtoUrl;
+}
+
 // Return to Test to Inspect Items
 function inspectQuestionFromReport(index) {
     document.getElementById("reportView").classList.add("hidden");
@@ -2067,8 +2212,86 @@ document.addEventListener("fullscreenchange", () => {
     }
 });
 
-// Keyboard shortcuts for SAT navigation
+// ====================================================
+// PROCTORING, INTEGRITY MONITORING & BROWSER LOCKDOWN
+// ====================================================
+function triggerSecurityViolation(reason) {
+    if (!examStarted || examSubmitted) return;
+
+    integrityViolations++;
+    const timestamp = new Date().toLocaleTimeString();
+    violationLogs.push({ reason, timestamp });
+
+    const badge = document.getElementById("violationCounterBadge");
+    if (badge) badge.textContent = integrityViolations;
+
+    // Display interruption lock modal
+    const modal = document.getElementById("interruptionModal");
+    if (modal && !isInterruptionOpen) {
+        isInterruptionOpen = true;
+        modal.classList.remove("hidden");
+    }
+}
+
+function resumeExamFromInterruption() {
+    isInterruptionOpen = false;
+    const modal = document.getElementById("interruptionModal");
+    if (modal) modal.classList.add("hidden");
+    
+    // Re-engage fullscreen if dropped
+    if (!document.fullscreenElement && !isSimulatedFullscreen) {
+        toggleFullscreen();
+    }
+}
+
+// 1. Detect switching away to another tab or minimizing the browser window
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden && examStarted && !examSubmitted) {
+        triggerSecurityViolation("Switched browser tab or minimized window");
+    }
+});
+
+// 2. Detect losing focus (e.g. clicking outside, opening split screen, or opening another application)
+window.addEventListener("blur", () => {
+    if (examStarted && !examSubmitted && !isInterruptionOpen) {
+        triggerSecurityViolation("Browser window lost focus");
+    }
+});
+
+// 3. Prevent accidental tab closure or reloading while the exam is active
+window.addEventListener("beforeunload", (e) => {
+    if (examStarted && !examSubmitted) {
+        e.preventDefault();
+        e.returnValue = "Your exam session is currently active. Any unsaved progress will be finalized.";
+        return e.returnValue;
+    }
+});
+
+// 4. Disable context menu (right-click) during active exam
+document.addEventListener("contextmenu", (e) => {
+    if (examStarted && !examSubmitted) {
+        e.preventDefault();
+    }
+});
+
+// 5. Block cheat shortcuts (Inspect Element, Copy, Print, Source Code)
 document.addEventListener("keydown", (e) => {
+    if (examStarted && !examSubmitted) {
+        // Block F12, Ctrl+Shift+I / Cmd+Opt+I (Developer Tools), Ctrl+U (View Source)
+        if (e.key === "F12" ||
+           ((e.ctrlKey || e.metaKey) && (e.key === "u" || e.key === "U" || (e.shiftKey && (e.key === "i" || e.key === "I" || e.key === "c" || e.key === "C"))))) {
+            e.preventDefault();
+            return;
+        }
+
+        // Block Ctrl+C / Cmd+C (Copying questions to search engines) unless typing in the short-answer box
+        if ((e.ctrlKey || e.metaKey) && (e.key === "c" || e.key === "C")) {
+            if (document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "INPUT") {
+                e.preventDefault();
+            }
+        }
+    }
+
     if (e.key === "Escape" && isSimulatedFullscreen) {
         toggleSimulatedFullscreen();
         return;
