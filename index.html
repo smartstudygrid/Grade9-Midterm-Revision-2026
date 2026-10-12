@@ -201,6 +201,12 @@
 
         <!-- Right: Actions & Tools -->
         <div class="flex items-center gap-2">
+            <button id="fullscreenBtn" onclick="toggleFullscreen()" title="Toggle Fullscreen" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 transition shadow-sm">
+                <svg id="fullscreenIcon" class="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                </svg>
+                <span id="fullscreenText">Full Screen</span>
+            </button>
             <button onclick="openReviewGrid()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg text-cb-blue bg-blue-50 hover:bg-blue-100 border border-blue-200 transition">
                 <span>📑</span> Review All (<span id="answeredCounter">0</span>/47)
             </button>
@@ -1998,8 +2004,76 @@ function returnToTestReview() {
     renderCurrentQuestion();
 }
 
+// Fullscreen Feature with Permissions Policy Check & Simulated Fallback
+let isSimulatedFullscreen = false;
+
+function toggleFullscreen() {
+    // Check if native fullscreen is allowed by the host permissions policy
+    const isPolicyBlocked = !document.fullscreenEnabled;
+
+    if (!isPolicyBlocked && document.documentElement.requestFullscreen) {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen()
+                .catch(() => {
+                    // Graceful fallback if blocked by permissions policy in embedded frames
+                    toggleSimulatedFullscreen();
+                });
+            return;
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch(() => {});
+            }
+            return;
+        }
+    }
+
+    // Direct simulated fallback when native fullscreen is unavailable or disallowed
+    toggleSimulatedFullscreen();
+}
+
+function toggleSimulatedFullscreen() {
+    isSimulatedFullscreen = !isSimulatedFullscreen;
+    const testView = document.getElementById("testView");
+    const fsBtnText = document.getElementById("fullscreenText");
+    const fsIcon = document.getElementById("fullscreenIcon");
+
+    if (isSimulatedFullscreen) {
+        testView.classList.add("fixed", "inset-0", "z-50", "w-screen", "h-screen");
+        if (fsBtnText) fsBtnText.textContent = "Exit Full";
+        if (fsIcon) {
+            fsIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9L4 4m0 0h4m-4 0v4m11 11l5 5m0-5v5m0 0h-5m-6-11l5-5m-5 0h4m-4 0v4M4 20l5-5m-5 5h4m-4 0v-4"/>`;
+        }
+    } else {
+        testView.classList.remove("fixed", "inset-0", "z-50", "w-screen", "h-screen");
+        if (fsBtnText) fsBtnText.textContent = "Full Screen";
+        if (fsIcon) {
+            fsIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>`;
+        }
+    }
+}
+
+// Sync Fullscreen Button UI State with browser fullscreen changes
+document.addEventListener("fullscreenchange", () => {
+    const fsBtnText = document.getElementById("fullscreenText");
+    const fsIcon = document.getElementById("fullscreenIcon");
+    if (!fsBtnText || !fsIcon) return;
+
+    if (document.fullscreenElement) {
+        fsBtnText.textContent = "Exit Full";
+        fsIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9L4 4m0 0h4m-4 0v4m11 11l5 5m0-5v5m0 0h-5m-6-11l5-5m-5 0h4m-4 0v4M4 20l5-5m-5 5h4m-4 0v-4"/>`;
+    } else {
+        fsBtnText.textContent = "Full Screen";
+        fsIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>`;
+    }
+});
+
 // Keyboard shortcuts for SAT navigation
 document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isSimulatedFullscreen) {
+        toggleSimulatedFullscreen();
+        return;
+    }
+
     if (!examStarted || examSubmitted) return;
     if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") return;
 
