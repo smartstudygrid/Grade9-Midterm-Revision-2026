@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 9 English Final - Digital SAT Suite Examination</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Merriweather (for authentic SAT testing typography) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cb: {
+                            navy: '#002543',
+                            navyLight: '#0d3b66',
+                            blue: '#0070e0',
+                            blueHover: '#005bb5',
+                            softBlue: '#eef6fc',
+                            amber: '#d97706',
+                            amberSoft: '#fef3c7',
+                            border: '#d1d5db',
+                            bg: '#f3f4f6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Merriweather', 'Georgia', 'serif'],
+                        mono: ['Roboto Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for SAT split panels */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .screen-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Printable Score Report Styles */
+        @media print {
+            body {
+                background: white !important;
+                overflow: visible !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            #reportView {
+                display: block !important;
+                position: static !important;
+                height: auto !important;
+                overflow: visible !important;
+                padding: 0 !important;
+            }
+            .screen-container {
+                height: auto !important;
+                overflow: visible !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased font-sans select-none">
+
+<!-- ========================================== -->
+<!-- 1. STUDENT REGISTRATION / CREDENTIALS VIEW -->
+<!-- ========================================== -->
+<div id="loginView" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#001e38] via-[#002d54] to-[#0b4870] p-4">
+    <div class="w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
+        <!-- Bluebook header bar -->
+        <div class="bg-cb-navy px-8 py-6 text-white border-b border-blue-900/50 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center font-extrabold text-blue-300 text-lg">
+                    SAT
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">Digital Assessment Suite</h1>
+                    <p class="text-xs text-blue-200">Grade 9 English Language Arts Final Exam</p>
+                </div>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Ready
+            </span>
+        </div>
+
+        <form id="credentialsForm" onsubmit="startExam(event)" class="p-8 space-y-5">
+            <div class="bg-blue-50/80 border-l-4 border-cb-blue p-4 rounded-r-lg">
+                <p class="text-xs font-semibold text-cb-navy uppercase tracking-wider">Exam Directives</p>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    This test includes <strong>44 Multiple Choice Questions</strong> covering Transitive/Intransitive Verbs, Linking Verbs, Verb Phrases, Contextual Vocabulary, and Reading Comprehension, followed by <strong>3 Short Answer Prompts</strong> for <em>"The Necklace"</em>. Enter your details below to activate your secure testing session.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1" for="studentName">
+                        Student Full Name <span class="text-rose-500">*</span>
+                    </label>
+                    <input type="text" id="studentName" required placeholder="e.g., Alexander Mercer"
+                        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-cb-blue focus:border-transparent transition-all">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1" for="studentId">
+                            Student ID / Roll No. <span class="text-rose-500">*</span>
+                        </label>
+                        <input type="text" id="studentId" required placeholder="e.g., 2026-ENG9-441"
+                            class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-cb-blue focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1" for="gradeSection">
+                            Grade & Section <span class="text-rose-500">*</span>
+                        </label>
+                        <input type="text" id="gradeSection" required value="Grade 9 - Section A"
+                            class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-cb-blue focus:border-transparent transition-all">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1" for="examDate">
+                            Exam Date
+                        </label>
+                        <input type="date" id="examDate"
+                            class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-cb-blue focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1" for="testCode">
+                            Testing Room / Session
+                        </label>
+                        <input type="text" id="testCode" value="SESSION-ELA-9F"
+                            class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-900 text-sm bg-slate-50 focus:outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-3">
+                <button type="submit"
+                    class="w-full py-3.5 px-6 rounded-xl bg-cb-blue hover:bg-cb-blueHover text-white font-bold text-sm tracking-wide shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.99]">
+                    <span>Enter Testing Module</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 2. SAT TESTING VIEW (FULL SCREEN FIT)       -->
+<!-- ========================================== -->
+<div id="testView" class="screen-container hidden bg-[#f8fafc]">
+    <!-- Digital SAT Top App Bar -->
+    <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0 shadow-sm z-20">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+                <span class="bg-cb-navy text-white text-xs font-extrabold px-2.5 py-1 rounded">SAT</span>
+                <div class="hidden sm:block">
+                    <h2 class="text-sm font-bold text-slate-900 leading-tight">Module 1: Reading and Writing</h2>
+                    <p class="text-[11px] text-slate-500 font-medium" id="headerCandidateName">Candidate: --</p>
+                </div>
+            </div>
+            <div class="h-6 w-px bg-slate-200 hidden md:block"></div>
+            <div class="hidden md:flex items-center gap-2 text-xs text-slate-600">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span id="headerSectionIndicator">Grammar: Action Verbs</span>
+            </div>
+        </div>
+
+        <!-- Center: Digital SAT Timer Bar -->
+        <div class="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-full px-4 py-1.5 shadow-inner">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span id="timerDisplay" class="font-mono font-bold text-sm tracking-wider text-slate-800">55:00</span>
+            <button onclick="toggleTimerVisibility()" id="timerToggleBtn" class="text-[11px] font-semibold text-cb-blue hover:underline pl-1">Hide</button>
+        </div>
+
+        <!-- Right: Actions & Tools -->
+        <div class="flex items-center gap-2">
+            <button onclick="openReviewGrid()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg text-cb-blue bg-blue-50 hover:bg-blue-100 border border-blue-200 transition">
+                <span>📑</span> Review All (<span id="answeredCounter">0</span>/47)
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN TEST BODY: TWO-PANEL SPLIT (FIT SCREEN) -->
+    <main class="flex-1 flex overflow-hidden">
+        <!-- LEFT PANEL: Stimulus / Rule / Passage Context -->
+        <section class="w-1/2 border-r border-slate-200 bg-white overflow-y-auto p-8 relative flex flex-col justify-between">
+            <div>
+                <!-- Domain / Skill Badge -->
+                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                    <span id="domainBadge" class="text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded bg-blue-100 text-blue-800">
+                        Craft and Structure
+                    </span>
+                    <span id="questionTopicIndicator" class="text-xs text-slate-400 font-mono">Item 1 of 47</span>
+                </div>
+
+                <!-- Reference Header -->
+                <h3 id="stimulusTitle" class="text-base font-bold text-slate-900 mb-3">
+                    Grammar Guideline: Transitive vs. Intransitive Verbs
+                </h3>
+
+                <!-- Stimulus / Passage Text (Merriweather SAT Serif Font) -->
+                <div id="stimulusContent" class="font-serif text-[15px] text-slate-700 leading-relaxed space-y-4">
+                    <!-- Dynamic Stimulus -->
+                </div>
+            </div>
+
+            <!-- Context Footer / Note -->
+            <div id="stimulusFooter" class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400 italic">
+                Official Grade 9 Standardized English Language Arts Assessment
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: Question Prompt, Choices & Mark for Review -->
+        <section class="w-1/2 bg-[#f8fafc] overflow-y-auto p-8 flex flex-col justify-between">
+            <div class="max-w-2xl mx-auto w-full">
+                <!-- Question Top Action Bar -->
+                <div class="flex items-center justify-between mb-5">
+                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-cb-navy text-white font-bold text-sm shadow-sm" id="itemNumberTag">
+                        1
+                    </span>
+                    <button id="flagBtn" onclick="toggleFlagCurrentQuestion()"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold text-slate-600 hover:bg-white hover:text-amber-600 transition shadow-sm">
+                        <svg id="flagIcon" class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/></svg>
+                        <span id="flagText">Mark for Review</span>
+                    </button>
+                </div>
+
+                <!-- Prompt Sentence -->
+                <div class="mb-6">
+                    <p id="questionPrompt" class="text-base font-semibold text-slate-900 leading-snug">
+                        <!-- Dynamic Prompt -->
+                    </p>
+                </div>
+
+                <!-- Dynamic Options Container (Multiple Choice or Short Answer) -->
+                <div id="interactionContainer" class="space-y-3">
+                    <!-- Rendered by JS -->
+                </div>
+
+                <!-- Immediate feedback banner in Review/Key mode -->
+                <div id="questionFeedback" class="hidden mt-6 p-4 rounded-xl text-xs leading-relaxed border"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- BOTTOM FOOTER: Navigation Controls & Question Palette Toggle -->
+    <footer class="h-16 bg-white border-t border-slate-200 px-6 flex items-center justify-between shrink-0 shadow-sm z-20">
+        <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-500">Question</span>
+            <span id="bottomQuestionTracker" class="text-xs font-bold text-slate-900">1 of 47</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button id="prevBtn" onclick="navigateQuestion(-1)"
+                class="px-5 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition flex items-center gap-1 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                <span>Back</span>
+            </button>
+            <button id="nextBtn" onclick="navigateQuestion(1)"
+                class="px-6 py-2 rounded-lg bg-cb-blue hover:bg-cb-blueHover text-white text-xs font-bold transition flex items-center gap-1 shadow-md shadow-blue-500/20">
+                <span>Next</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <button id="submitExamBtn" onclick="confirmSubmitModal()"
+                class="hidden px-6 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-md shadow-emerald-600/20">
+                Finish & Submit
+            </button>
+        </div>
+    </footer>
+</div>
+
+<!-- ========================================== -->
+<!-- 3. SAT QUESTION PALETTE REVIEW DRAWER      -->
+<!-- ========================================== -->
+<div id="reviewModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200">
+        <div class="px-6 py-4 bg-cb-navy text-white flex items-center justify-between">
+            <div>
+                <h3 class="font-bold text-base">Question Review Navigator</h3>
+                <p class="text-xs text-blue-200">Check completed items, flagged questions, and unanswered prompts before scoring.</p>
+            </div>
+            <button onclick="closeReviewGrid()" class="text-slate-300 hover:text-white text-xl font-bold">&times;</button>
+        </div>
+
+        <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap gap-4 text-xs font-medium text-slate-600 justify-center">
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-cb-blue"></span> Current</span>
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-slate-200 border border-slate-300"></span> Unanswered</span>
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-emerald-100 border border-emerald-400 text-emerald-800"></span> Answered</span>
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-amber-400 text-white">★</span> Marked for Review</span>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6">
+            <!-- Sections layout inside drawer -->
+            <div class="space-y-6" id="paletteSectionsContainer">
+                <!-- Dynamically generated question buttons -->
+            </div>
+        </div>
+
+        <div class="px-6 py-3.5 bg-slate-100 border-t border-slate-200 flex justify-between items-center">
+            <button onclick="closeReviewGrid()" class="px-4 py-2 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200">
+                Return to Test
+            </button>
+            <button onclick="submitExamNow()" class="px-5 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">
+                Submit Entire Examination
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Submission Dialog -->
+<div id="confirmSubmitDialog" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl border border-slate-200 text-center">
+        <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-3 text-xl">⚠️</div>
+        <h4 class="text-base font-bold text-slate-900">Submit Exam for Scoring?</h4>
+        <p class="text-xs text-slate-600 mt-2" id="unansweredWarningText">
+            Are you sure you want to finish? You will not be able to change your answers once submitted.
+        </p>
+        <div class="mt-6 flex gap-3 justify-center">
+            <button onclick="closeConfirmModal()" class="px-4 py-2 rounded-lg text-xs font-bold border border-slate-300 text-slate-700 hover:bg-slate-50">Keep Working</button>
+            <button onclick="submitExamNow()" class="px-5 py-2 rounded-lg text-xs font-bold bg-cb-blue hover:bg-cb-blueHover text-white">Yes, Finalize & Score</button>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 4. DETAILED SAT SCORE REPORT VIEW          -->
+<!-- ========================================== -->
+<div id="reportView" class="hidden min-h-screen bg-slate-100 py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto space-y-6">
+
+        <!-- Report Control Bar -->
+        <div class="flex items-center justify-between no-print">
+            <button onclick="returnToTestReview()" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition shadow-sm">
+                ← Return to Question Review
+            </button>
+            <button onclick="window.print()" class="inline-flex items-center gap-2 px-5 py-2 text-xs font-bold rounded-lg bg-cb-blue hover:bg-cb-blueHover text-white shadow-md transition">
+                <span>🖨️</span> Print / Save PDF Report
+            </button>
+        </div>
+
+        <!-- Official SAT Diagnostic Score Card -->
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+            <!-- Header Banner -->
+            <div class="bg-cb-navy text-white px-8 py-7 flex flex-wrap justify-between items-center border-b-4 border-blue-500">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-blue-500 text-white tracking-widest uppercase">Official Score Report</span>
+                        <span class="text-xs text-blue-200">• Digital SAT Suite Equivalent</span>
+                    </div>
+                    <h2 class="text-2xl font-black tracking-tight">Grade 9 English Language Arts Diagnostic</h2>
+                    <p class="text-xs text-blue-200 mt-1">Summative Competency: Grammar, Craft & Vocabulary, and Literary Analysis</p>
+                </div>
+                <div class="mt-4 sm:mt-0 text-right">
+                    <div class="text-[10px] uppercase font-bold text-blue-300">Assessment Code</div>
+                    <div class="text-sm font-mono font-bold">ELA-G9-FINAL-2026</div>
+                </div>
+            </div>
+
+            <!-- Candidate Demographic Summary -->
+            <div class="bg-slate-50 border-b border-slate-200 px-8 py-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+                <div>
+                    <span class="block text-slate-400 uppercase font-semibold text-[10px]">Student Name</span>
+                    <span class="font-bold text-slate-800 text-sm" id="repStudentName">--</span>
+                </div>
+                <div>
+                    <span class="block text-slate-400 uppercase font-semibold text-[10px]">Student ID</span>
+                    <span class="font-mono font-semibold text-slate-800" id="repStudentId">--</span>
+                </div>
+                <div>
+                    <span class="block text-slate-400 uppercase font-semibold text-[10px]">Grade & Section</span>
+                    <span class="font-semibold text-slate-800" id="repGradeSection">--</span>
+                </div>
+                <div>
+                    <span class="block text-slate-400 uppercase font-semibold text-[10px]">Date Administered</span>
+                    <span class="font-semibold text-slate-800" id="repDate">--</span>
+                </div>
+            </div>
+
+            <!-- Scaled Score & Performance Band Highlight -->
+            <div class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center bg-gradient-to-br from-blue-50 via-slate-50 to-indigo-50/50 p-6 rounded-2xl border border-blue-100">
+                    <div class="text-center md:border-r border-blue-200/60 md:pr-6">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Estimated SAT Scaled Score</span>
+                        <div class="text-5xl font-black text-cb-navy tracking-tight my-1" id="repScaledScore">720</div>
+                        <span class="text-xs font-semibold text-blue-600 bg-blue-100/70 px-2.5 py-0.5 rounded-full inline-block">Score Range: 200–800</span>
+                    </div>
+
+                    <div class="text-center md:border-r border-blue-200/60 md:px-4">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Total MCQ Correct</span>
+                        <div class="text-4xl font-extrabold text-emerald-600 my-1">
+                            <span id="repTotalRaw">39</span> <span class="text-lg text-slate-400 font-normal">/ 44</span>
+                        </div>
+                        <span class="text-xs font-bold text-slate-600" id="repPercentage">88.6% Raw Accuracy</span>
+                    </div>
+
+                    <div class="text-center md:pl-4">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">College Readiness Benchmark</span>
+                        <div class="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold" id="repBenchmarkBadge">
+                            <span>✓ Benchmark Exceeded</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-2" id="repBenchmarkDescription">
+                            Student exhibits strong mastery in 9th-grade conventions and literary analysis.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Domain Proficiency Breakdown Bars -->
+                <div class="mt-8">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700 mb-4 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-cb-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        Performance by Domain & Content Area
+                    </h3>
+
+                    <div class="space-y-4" id="domainProgressBarsContainer">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+
+                <!-- Short Answer Analysis Review & Rubric Scores -->
+                <div class="mt-10 pt-8 border-t border-slate-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                            <span>✍️</span> Constructed Short-Answer Responses: <em>"The Necklace"</em>
+                        </h3>
+                        <span class="text-xs font-semibold text-slate-500">Teacher Rubric Benchmark</span>
+                    </div>
+
+                    <div class="space-y-4" id="shortAnswerReportContainer">
+                        <!-- Populated dynamically with student input, rubric notes, and model answers -->
+                    </div>
+                </div>
+
+                <!-- Full Question-by-Question Matrix Table -->
+                <div class="mt-10 pt-8 border-t border-slate-200">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-2">
+                        <span>📋</span> Question-by-Question Detailed Review Matrix
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Click any question row to inspect the original text, your choice, and the official diagnostic explanation.</p>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-100 text-slate-700 font-bold uppercase border-b border-slate-200">
+                                <tr>
+                                    <th class="p-3 w-14 text-center">Item</th>
+                                    <th class="p-3">Skill / Topic Domain</th>
+                                    <th class="p-3 w-28 text-center">Student Choice</th>
+                                    <th class="p-3 w-28 text-center">Key</th>
+                                    <th class="p-3 w-28 text-center">Outcome</th>
+                                    <th class="p-3 text-center no-print">Review</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 font-medium" id="matrixTableBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Proctor Signature / Official Certification -->
+                <div class="mt-10 pt-6 border-t-2 border-dashed border-slate-200 grid grid-cols-2 gap-8 text-xs text-slate-500">
+                    <div>
+                        <div class="h-10 border-b border-slate-300 mb-1"></div>
+                        <p class="font-semibold text-slate-700">Examiner / English Department Head Signature</p>
+                        <p class="text-[10px]">Verified against CollegeBoard ELA Standard 9</p>
+                    </div>
+                    <div>
+                        <div class="h-10 border-b border-slate-300 mb-1"></div>
+                        <p class="font-semibold text-slate-700">School Testing Seal & Validation Stamp</p>
+                        <p class="text-[10px]">Confidential Summative Record</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* Comprehensive Examination Dataset (44 MCQs + 3 Short Answers = 47 Items) */
+const examQuestions = [
+    // ----------------------------------------------------
+    // TOPIC 1: ACTION VERBS (TRANSITIVE & INTRANSITIVE) - 8 MCQs (Q1 - Q8)
+    // ----------------------------------------------------
+    {
+        id: 1,
+        type: "mcq",
+        domain: "Grammar: Lesson 5",
+        topic: "Verbs: Action (Transitive/Intransitive)",
+        stimulusTitle: "Action Verbs: Transitive and Intransitive Concepts",
+        stimulus: `<p class="font-bold text-slate-800 mb-2">Rule Review:</p>
+                   <p>An <strong>action verb</strong> tells what someone or something does. A <strong>transitive verb</strong> expresses an action that is directed toward a receiver—the direct object (answering <em>what?</em> or <em>whom?</em>). An <strong>intransitive verb</strong> does not take a direct object.</p>
+                   <div class="bg-blue-50/70 p-3 rounded-lg border border-blue-100 my-2 text-xs">
+                     <strong>Example:</strong> "Jaelyn <span class="underline">followed</span> the recipe carefully." (Transitive — followed <em>what?</em> The recipe).<br>
+                     "The dancer performed gracefully." (Intransitive — followed by an adverb answering <em>how</em>).
+                   </div>`,
+        prompt: `Consider the sentence: <em>"Kathleen Battle, the opera star, <u>sings</u> amazingly well."</em> What is the classification of the underlined verb?`,
+        options: [
+            "Transitive, because it transfers its action to the adverb 'well'.",
+            "Intransitive, because it is followed by modifiers rather than a direct object receiving the action.",
+            "Linking, because it connects the singer to opera.",
+            "Auxiliary (helping) verb, because it aids the adverb 'amazingly'."
+        ],
+        correct: 1,
+        explanation: "The verb 'sings' is intransitive because there is no direct object answering what or whom she sings. 'Amazingly well' are adverbs describing the manner of singing."
+    },
+    {
+        id: 2,
+        type: "mcq",
+        domain: "Grammar: Lesson 5",
+        topic: "Verbs: Action (Transitive/Intransitive)",
+        stimulusTitle: "Grammar: Action Verbs with Direct Objects",
+        stimulus: `<p>A transitive verb must have a direct object that receives the action directly from the subject.</p>
+                   <p class="mt-2 text-slate-600 italic">"The red ants fought the black ants on the sunlit mound."</p>`,
+        prompt: `In the sentence above, why is the verb <strong>fought</strong> classified as <em>transitive</em>?`,
+        options: [
+            "Because it takes 'the black ants' as its direct object answering whom they fought.",
+            "Because the action happens outdoors on a mound.",
+            "Because 'fought' is in the past tense.",
+            "It is not transitive; all fighting verbs are intransitive."
+        ],
+        correct: 0,
+        explanation: "'The red ants fought [whom?]' -> 'the black ants'. Since the verb transfers action directly to an object noun phrase, it is transitive."
+    },
+    {
+        id: 3,
+        type: "mcq",
+        domain: "Grammar: Lesson 5",
+        topic: "Verbs: Action (Transitive/Intransitive)",
+        stimulusTitle: "Grammar: Distinguishing Verb Functions",
+        stimulus: `<p>Many English verbs can function as either transitive or intransitive depending on whether they take an object in a specific sentence.</p>`,
+        prompt: `Which of the following sentences uses the verb <strong>played</strong> as an <em>intransitive</em> verb?`,
+        options: [
+            "The children played soccer until twilight settled.",
+            "The orchestra played a Beethoven symphony with passion.",
+            "During the warm afternoon, the children played joyfully outside.",
+            "He played the violin with admirable skill."
+        ],
+        correct: 2,
+        explanation: "In 'the children played joyfully outside', 'joyfully' is an adverb and 'outside' is an adverb of place. There is no direct object."
+    },
+    {
+        id: 4,
+        type: "mcq",
+        domain: "Grammar: Lesson 5",
+        topic: "Verbs: Action (Transitive/Intransitive)",
+        stimulusTitle: "Grammar: Identifying Objects of Action Verbs",
+        stimulus: `<p class="italic text-slate-700">"The apprentice baker carefully rolled the delicate pastry dough across the flour-dusted marble counter."</p>`,
+        prompt: `In the sentence provided, what is the direct object of the transitive verb <em>rolled</em>?`,
+        options: [
+            "the flour-dusted marble counter",
+            "the apprentice baker",
+            "the delicate pastry dough",
+            "carefully"
+        ],
+        correct: 2,
+        explanation: "The apprentice rolled [what?] -> 'the delicate pastry dough'. 'Across the counter' is a prepositional phrase showing location."
+    },
+    {
+        id: 5,
+        type: "mcq",
+        domain: "Grammar: Lesson 5",
+        topic: "Verbs: Action (Transitive/Intransitive)",
+        stimulusTitle: "Grammar: Analyzing Sentence Structure",
+        stimulus: `<p>Determine the relationship between the verb and the elements that follow it to identify transitivity.</p>`,
+        prompt: `Which of the following contains an <strong>intransitive</strong> action verb?`,
+        options: [
+            "The ancient oak tree fell abruptly during the violent gale.",
+            "The librarian stacked the heavy encyclopedias upon the oak cart.",
+            "The mechanic repaired the fractured brake line.",
+            "The astronaut took vivid photographs of the lunar surface."
+        ],
+        correct: 0,
+        explanation: "The verb 'fell' has no object; 'abruptly' is an adverb and 'during the violent gale' is a prepositional phrase of time."
+    },
+    {
+        id: 6,
+        type: "mcq",
+        domain: "Grammar: Lesson 5",
+        topic: "Verbs: Action (Transitive/Intransitive)",
+        stimulusTitle: "Grammar: Physical vs. Mental Transitive Verbs",
+        stimulus: `<p>Action表达 physical motion (<em>run, throw</em>) or mental processes (<em>remember, consider, evaluate</em>).</p>`,
+        prompt: `In the sentence <em>"Mathilde envisioned grand banquets of roasted quail,"</em> the verb <u>envisioned</u> is:`,
+        options: [
+            "A linking verb connecting Mathilde to banquets.",
+            "An intransitive verb expressing a passive state.",
+            "A transitive verb taking 'grand banquets' as its direct object.",
+            "An auxiliary (helping) verb assisting the preposition 'of'."
+        ],
+        correct: 2,
+        explanation: "'Envisioned' is a mental action verb. She envisioned [what?] -> 'grand banquets', making it transitive."
+    },
+    {
+        id: 7,
+        type: "mcq",
+        domain: "Grammar: Lesson 5",
+        topic: "Verbs: Action (Transitive/Intransitive)",
+        stimulusTitle: "Grammar: Paired Sentence Comparison",
+        stimulus: `<p>Sentence 1: <em>The athlete sneezed loudly during the ceremony.</em><br>
+                   Sentence 2: <em>The athlete caught the gold medal proudly.</em></p>`,
+        prompt: `How do Sentence 1 and Sentence 2 compare regarding their verb classifications?`,
+        options: [
+            "Sentence 1 contains a transitive verb; Sentence 2 contains an intransitive verb.",
+            "Sentence 1 contains an intransitive verb; Sentence 2 contains a transitive verb.",
+            "Both sentences contain transitive verbs with direct objects.",
+            "Both sentences contain intransitive verbs followed by adverbs."
+        ],
+        correct: 1,
+        explanation: "'Sneezed' cannot take an object (intransitive). 'Caught' takes the direct object 'the gold medal' (transitive)."
+    },
+    {
+        id: 8,
+        type: "mcq",
+        domain: "Grammar: Lesson 5",
+        topic: "Verbs: Action (Transitive/Intransitive)",
+        stimulusTitle: "Grammar: Identifying Transitivity in Complex Sentences",
+        stimulus: `<p class="italic text-slate-700">"Before sunrise, the diligent fisherman guided his wooden skiff through the fog."</p>`,
+        prompt: `Which question must you ask of the verb <em>guided</em> to verify that it is transitive?`,
+        options: [
+            "Where did the fisherman guide?",
+            "When did the fisherman guide?",
+            "What or whom did the fisherman guide?",
+            "Why did the fisherman guide?"
+        ],
+        correct: 2,
+        explanation: "To find a direct object that confirms transitivity, one asks 'verb + what or whom?' (The fisherman guided what? -> his wooden skiff)."
+    },
+
+    // ----------------------------------------------------
+    // TOPIC 2: LINKING VERBS & COMPLEMENTS - 8 MCQs (Q9 - Q16)
+    // ----------------------------------------------------
+    {
+        id: 9,
+        type: "mcq",
+        domain: "Grammar: Lesson 6",
+        topic: "Verbs: Linking",
+        stimulusTitle: "Linking Verbs: Definition & Subject Complements",
+        stimulus: `<p class="font-bold text-slate-800 mb-2">Rule Review:</p>
+                   <p>A <strong>linking verb</strong> links the subject to a noun or pronoun that identifies or renames it (<strong>predicate noun / nominative</strong>), or to an adjective that describes it (<strong>predicate adjective</strong>).</p>
+                   <p class="mt-2 text-xs text-slate-600">Common linking verbs include forms of <em>be</em> (<em>am, is, are, was, were, been, being</em>) and sensory/condition verbs: <em>look, sound, feel, grow, remain, stay, seem, appear, become, taste</em>.</p>`,
+        prompt: `In the sentence <em>"Irish Americans are one of this country's largest immigrant groups,"</em> the verb <u>are</u> functions as:`,
+        options: [
+            "An action verb showing physical movement.",
+            "A linking verb connecting the subject to the predicate noun 'one'.",
+            "An auxiliary (helping) verb helping the noun 'groups'.",
+            "A transitive verb taking 'immigrant groups' as an object."
+        ],
+        correct: 1,
+        explanation: "'Are' is a linking verb that connects the subject 'Irish Americans' to the predicate pronoun/noun 'one'."
+    },
+    {
+        id: 10,
+        type: "mcq",
+        domain: "Grammar: Lesson 6",
+        topic: "Verbs: Linking",
+        stimulusTitle: "Grammar: Identifying Predicate Adjectives",
+        stimulus: `<p class="italic text-slate-700">"When he was a schoolboy, John's future seemed exceptionally bright to his mentors."</p>`,
+        prompt: `In the sentence above, what is the <strong>predicate adjective</strong> linked by the verb <em>seemed</em>?`,
+        options: [
+            "schoolboy",
+            "future",
+            "exceptionally",
+            "bright"
+        ],
+        correct: 3,
+        explanation: "'Bright' is the predicate adjective that describes 'future'. 'Exceptionally' is an adverb modifying bright."
+    },
+    {
+        id: 11,
+        type: "mcq",
+        domain: "Grammar: Lesson 6",
+        topic: "Verbs: Linking",
+        stimulusTitle: "Grammar: Sensory Verbs as Action vs. Linking",
+        stimulus: `<p>Sensory verbs such as <em>taste, smell, look, feel</em> can be either linking verbs or action verbs depending on whether the subject actively performs the action.</p>`,
+        prompt: `Which sentence uses <strong>smelled</strong> as a <em>linking verb</em>?`,
+        options: [
+            "The bloodhound smelled the damp earth tracking the lost traveler.",
+            "The chef smelled the fresh spices before seasoning the soup.",
+            "The warm cinnamon rolls smelled delicious throughout the bakery.",
+            "Mathilde cautiously smelled the strange bottle of medicine."
+        ],
+        correct: 2,
+        explanation: "In 'rolls smelled delicious', the rolls are not performing the act of smelling; 'delicious' is a predicate adjective describing their scent."
+    },
+    {
+        id: 12,
+        type: "mcq",
+        domain: "Grammar: Lesson 6",
+        topic: "Verbs: Linking",
+        stimulusTitle: "Grammar: Predicate Nouns (Nominatives)",
+        stimulus: `<p class="italic text-slate-700">"John Fitzgerald Kennedy became the thirty-fifth president of the United States."</p>`,
+        prompt: `In the sentence above, the word <strong>president</strong> functions as what grammatical element?`,
+        options: [
+            "Direct Object",
+            "Predicate Noun (Predicate Nominative)",
+            "Indirect Object",
+            "Object of the Preposition"
+        ],
+        correct: 1,
+        explanation: "'President' follows the linking verb 'became' and renames the subject 'John Fitzgerald Kennedy'."
+    },
+    {
+        id: 13,
+        type: "mcq",
+        domain: "Grammar: Lesson 6",
+        topic: "Verbs: Linking",
+        stimulusTitle: "Grammar: Identifying Linking Verbs in Context",
+        stimulus: `<p class="italic text-slate-700">"Joseph and Rose Kennedy appeared eager to give their children every opportunity to succeed."</p>`,
+        prompt: `Identify the linking verb and the word it connects to the subject in the sentence above:`,
+        options: [
+            "Linking verb: <em>give</em>; connects to <em>opportunity</em>.",
+            "Linking verb: <em>appeared</em>; connects subject to the predicate adjective <em>eager</em>.",
+            "Linking verb: <em>succeed</em>; connects subject to <em>children</em>.",
+            "Linking verb: <em>to give</em>; connects to <em>Rose Kennedy</em>."
+        ],
+        correct: 1,
+        explanation: "'Appeared' is the linking verb connecting the compound subject 'Joseph and Rose Kennedy' to the predicate adjective 'eager'."
+    },
+    {
+        id: 14,
+        type: "mcq",
+        domain: "Grammar: Lesson 6",
+        topic: "Verbs: Linking",
+        stimulusTitle: "Grammar: Action vs. Linking Contrasts",
+        stimulus: `<p>Test your ability to differentiate sentences that convey state-of-being versus physical activity.</p>`,
+        prompt: `Which sentence does <strong>NOT</strong> contain a linking verb?`,
+        options: [
+            "Bananas were plentiful at the tropical fruit market.",
+            "Mathilde remained silent throughout the cold carriage ride.",
+            "About forty million Americans claim Irish ancestry.",
+            "The chilled winter air felt icy against our bare hands."
+        ],
+        correct: 2,
+        explanation: "'Claim' in 'claim Irish ancestry' is a transitive action verb taking 'Irish ancestry' as a direct object. 'Were', 'remained', and 'felt' are linking verbs."
+    },
+    {
+        id: 15,
+        type: "mcq",
+        domain: "Grammar: Lesson 6",
+        topic: "Verbs: Linking",
+        stimulusTitle: "Grammar: Verbs of Condition",
+        stimulus: `<p class="italic text-slate-700">"After ten grueling years of domestic labor, Mathilde looked weary and impoverished."</p>`,
+        prompt: `What are the syntactic roles of <strong>weary</strong> and <strong>impoverished</strong> in this sentence?`,
+        options: [
+            "Direct objects of the action verb 'looked'.",
+            "Compound predicate adjectives describing the subject 'Mathilde'.",
+            "Adverbs of manner modifying the verb 'looked'.",
+            "Predicate nouns identifying the years."
+        ],
+        correct: 1,
+        explanation: "'Looked' is a linking verb connecting Mathilde to the compound predicate adjectives 'weary' and 'impoverished'."
+    },
+    {
+        id: 16,
+        type: "mcq",
+        domain: "Grammar: Lesson 6",
+        topic: "Verbs: Linking",
+        stimulusTitle: "Grammar: Forms of the Verb 'To Be'",
+        stimulus: `<p class="italic text-slate-700">"This total is almost ten times the number of people in the country of Ireland today."</p>`,
+        prompt: `What is the main verb of this sentence, and how is it classified?`,
+        options: [
+            "is (linking verb)",
+            "times (action verb)",
+            "people (intransitive verb)",
+            "today (auxiliary / helping verb)"
+        ],
+        correct: 0,
+        explanation: "'Is' is a form of 'be' functioning as the main linking verb of the sentence."
+    },
+
+    // ----------------------------------------------------
+    // TOPIC 3: VERB PHRASES: AUXILIARY (HELPING) VERBS - 8 MCQs (Q17 - Q24)
+    // ----------------------------------------------------
+    {
+        id: 17,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases: Auxiliary & Helping Verbs",
+        stimulusTitle: "Verb Phrases: Main & Auxiliary (Helping) Verbs",
+        stimulus: `<p class="font-bold text-slate-800 mb-2">Rule Review:</p>
+                   <p>A <strong>verb phrase</strong> consists of a main verb and one or more <strong>auxiliary verbs (also called helping verbs)</strong>. Note: <em>Auxiliary</em> and <em>helping</em> are two names for the exact same kind of verb!</p>
+                   <ul class="list-disc pl-5 mt-2 space-y-1 text-xs text-slate-600">
+                     <li><strong>Forms of <em>be</em>:</strong> <em>am, is, are, was, were, being, been</em></li>
+                     <li><strong>Forms of <em>have</em>:</strong> <em>has, have, had</em></li>
+                     <li><strong>Other auxiliary (helping) verbs:</strong> <em>can, could, may, might, shall, will, do, does, did, must, should, would</em></li>
+                   </ul>`,
+        prompt: `In the sentence <em>"Stock car racing <u>has been</u> popular for decades,"</em> the underlined words form:`,
+        options: [
+            "A compound subject.",
+            "A verb phrase where 'has' is the auxiliary (helping) verb and 'been' is the main verb.",
+            "Two distinct independent predicates.",
+            "An intransitive action verb and an adjective."
+        ],
+        correct: 1,
+        explanation: "'Has been' is a verb phrase. 'Has' functions as the auxiliary (helping) verb and 'been' (form of be) is the main verb."
+    },
+    {
+        id: 18,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases: Auxiliary & Helping Verbs",
+        stimulusTitle: "Grammar: Identifying Auxiliary (Helping) Verbs",
+        stimulus: `<p class="italic text-slate-700">"The veteran stock car driver was recognized by millions of auto racing enthusiasts."</p>`,
+        prompt: `Which word in the sentence above functions as the <strong>auxiliary (helping) verb</strong>?`,
+        options: [
+            "driver",
+            "was",
+            "recognized",
+            "racing"
+        ],
+        correct: 1,
+        explanation: "'Was' is the auxiliary (helping) verb working with the past participle 'recognized' to form the verb phrase 'was recognized'."
+    },
+    {
+        id: 19,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases: Auxiliary & Helping Verbs",
+        stimulusTitle: "Grammar: Interrupted Verb Phrases",
+        stimulus: `<p>In questions and negative statements, words like adverbs (<em>not, never</em>) or the subject often interrupt the verb phrase between the auxiliary (helping) verb and the main verb.</p>`,
+        prompt: `What is the complete <strong>verb phrase</strong> (auxiliary/helping verbs + main verb) in the question: <em>"Could she have arrived before the commencement of the ball?"</em>`,
+        options: [
+            "Could she have",
+            "she have arrived",
+            "Could have arrived",
+            "have arrived before"
+        ],
+        correct: 2,
+        explanation: "The complete verb phrase consists of the two auxiliary (helping) verbs 'Could' and 'have' along with the main verb 'arrived' ('Could have arrived')."
+    },
+    {
+        id: 20,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases: Auxiliary & Helping Verbs",
+        stimulusTitle: "Grammar: Identifying Multi-Word Verb Phrases",
+        stimulus: `<p class="italic text-slate-700">"By midnight, the clerks will have been dancing for over four consecutive hours."</p>`,
+        prompt: `How many <strong>auxiliary (helping) verbs</strong> precede the main verb in the sentence above?`,
+        options: [
+            "One ('will')",
+            "Two ('will', 'have')",
+            "Three ('will', 'have', 'been')",
+            "Four ('will', 'have', 'been', 'dancing')"
+        ],
+        correct: 2,
+        explanation: "'Will', 'have', and 'been' are the three auxiliary (helping) verbs preceding the main verb 'dancing'."
+    },
+    {
+        id: 21,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases: Auxiliary & Helping Verbs",
+        stimulusTitle: "Grammar: Adverbs Inside Verb Phrases",
+        stimulus: `<p class="italic text-slate-700">"The fatigued travelers could definitely not have anticipated such a devastating misfortune."</p>`,
+        prompt: `Which words form the actual <strong>verb phrase</strong> (the auxiliary/helping verbs and main verb), excluding intervening adverbs?`,
+        options: [
+            "could definitely not have anticipated",
+            "could have anticipated",
+            "definitely not have anticipated",
+            "have anticipated such"
+        ],
+        correct: 1,
+        explanation: "'Definitely' and 'not' are adverbs modifying the verb phrase. The verb phrase itself is 'could have anticipated' (auxiliary/helping verbs 'could' and 'have' + main verb 'anticipated')."
+    },
+    {
+        id: 22,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases: Auxiliary & Helping Verbs",
+        stimulusTitle: "Grammar: Modal Auxiliary (Helping) Verbs for Necessity",
+        stimulus: `<p>Modal auxiliary (helping) verbs (such as <em>can, must, should, may</em>) express nuances like permission, ability, or requirement.</p>`,
+        prompt: `In the sentence <em>"Monsieur Loisel must repay thirty-six thousand francs to the lenders,"</em> the modal auxiliary (helping) verb <u>must</u> conveys:`,
+        options: [
+            "Future probability",
+            "Past possibility",
+            "Obligation or absolute necessity",
+            "Permission"
+        ],
+        correct: 2,
+        explanation: "'Must' is a modal auxiliary (helping) verb denoting strict necessity or compelling obligation."
+    },
+    {
+        id: 23,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases: Auxiliary & Helping Verbs",
+        stimulusTitle: "Grammar: Forms of 'Have' as Auxiliary (Helping) Verbs",
+        stimulus: `<p class="italic text-slate-700">"No NASCAR champion has earned more lifetime victories than Richard Petty."</p>`,
+        prompt: `Which statement accurately describes the verb structure in the sentence above?`,
+        options: [
+            "It has a single intransitive action verb 'earned'.",
+            "It contains the verb phrase 'has earned', combining an auxiliary (helping) form of have with a past participle.",
+            "It contains a linking verb 'has' and a predicate noun 'victories'.",
+            "It contains no auxiliary (helping) verbs."
+        ],
+        correct: 1,
+        explanation: "'Has' is the auxiliary (helping) verb combining with the past participle 'earned' to form the present perfect verb phrase 'has earned'."
+    },
+    {
+        id: 24,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases: Auxiliary & Helping Verbs",
+        stimulusTitle: "Grammar: Auxiliary (Helping) vs. Main Verb Distinctions",
+        stimulus: `<p>Sentence A: <em>She had a beautiful satin gown for the event.</em><br>
+                   Sentence B: <em>She had purchased a beautiful satin gown for the event.</em></p>`,
+        prompt: `How does the function of the word <strong>had</strong> differ between Sentence A and Sentence B?`,
+        options: [
+            "In A, 'had' is an auxiliary (helping) verb; in B, 'had' is the main action verb.",
+            "In A, 'had' is the main action verb; in B, 'had' is an auxiliary (helping) verb assisting 'purchased'.",
+            "In both sentences, 'had' is an auxiliary (helping) verb.",
+            "In both sentences, 'had' is a linking verb."
+        ],
+        correct: 1,
+        explanation: "In Sentence A, 'had' functions alone as the main transitive verb. In Sentence B, 'had' is an auxiliary (helping) verb working with the main verb 'purchased'."
+    },
+
+    // ----------------------------------------------------
+    // TOPIC 3: VERB PHRASES & AUXILIARY VERBS - 8 MCQs (Q17 - Q24)
+    // ----------------------------------------------------
+    {
+        id: 17,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases & Auxiliary Verbs",
+        stimulusTitle: "Verb Phrases: Main & Auxiliary Verbs",
+        stimulus: `<p class="font-bold text-slate-800 mb-2">Rule Review:</p>
+                   <p>A <strong>verb phrase</strong> consists of a main verb and one or more <strong>auxiliary (helping) verbs</strong>.</p>
+                   <ul class="list-disc pl-5 mt-2 space-y-1 text-xs text-slate-600">
+                     <li><strong>Forms of be:</strong> <em>am, is, are, was, were, being, been</em></li>
+                     <li><strong>Forms of have:</strong> <em>has, have, had</em></li>
+                     <li><strong>Other common auxiliaries:</strong> <em>can, could, may, might, shall, will, do, does, did, must, should, would</em></li>
+                   </ul>`,
+        prompt: `In the sentence <em>"Stock car racing <u>has been</u> popular for decades,"</em> the underlined words form:`,
+        options: [
+            "A compound subject.",
+            "A verb phrase where 'has' is the auxiliary verb and 'been' is the main verb.",
+            "Two distinct independent predicates.",
+            "An intransitive action verb and an adjective."
+        ],
+        correct: 1,
+        explanation: "'Has been' is a verb phrase. 'Has' functions as the auxiliary (helping) verb and 'been' (form of be) is the main verb."
+    },
+    {
+        id: 18,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases & Auxiliary Verbs",
+        stimulusTitle: "Grammar: Identifying Auxiliary Verbs",
+        stimulus: `<p class="italic text-slate-700">"The veteran stock car driver was recognized by millions of auto racing enthusiasts."</p>`,
+        prompt: `Which word in the sentence above is an <strong>auxiliary verb</strong>?`,
+        options: [
+            "driver",
+            "was",
+            "recognized",
+            "racing"
+        ],
+        correct: 1,
+        explanation: "'Was' is the auxiliary verb helping the past participle 'recognized' to form the passive verb phrase 'was recognized'."
+    },
+    {
+        id: 19,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases & Auxiliary Verbs",
+        stimulusTitle: "Grammar: Interrupted Verb Phrases",
+        stimulus: `<p>In interrogative sentences (questions) and negative statements, words like adverbs (<em>not, never</em>) or the subject often interrupt the verb phrase.</p>`,
+        prompt: `What is the complete <strong>verb phrase</strong> in the question: <em>"Could she have arrived before the commencement of the ball?"</em>`,
+        options: [
+            "Could she have",
+            "she have arrived",
+            "Could have arrived",
+            "have arrived before"
+        ],
+        correct: 2,
+        explanation: "The verb phrase consists of the two auxiliary verbs 'Could' and 'have' plus the main verb 'arrived' ('Could have arrived'). The subject 'she' interrupts them."
+    },
+    {
+        id: 20,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases & Auxiliary Verbs",
+        stimulusTitle: "Grammar: Identifying Multi-Word Verb Phrases",
+        stimulus: `<p class="italic text-slate-700">"By midnight, the clerks will have been dancing for over four consecutive hours."</p>`,
+        prompt: `How many auxiliary (helping) verbs precede the main verb in the sentence above?`,
+        options: [
+            "One ('will')",
+            "Two ('will', 'have')",
+            "Three ('will', 'have', 'been')",
+            "Four ('will', 'have', 'been', 'dancing')"
+        ],
+        correct: 2,
+        explanation: "'Will', 'have', and 'been' are the three auxiliary verbs preceding the present participle main verb 'dancing'."
+    },
+    {
+        id: 21,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases & Auxiliary Verbs",
+        stimulusTitle: "Grammar: Adverbs Inside Verb Phrases",
+        stimulus: `<p class="italic text-slate-700">"The fatigued travelers could definitely not have anticipated such a devastating misfortune."</p>`,
+        prompt: `Which words form the actual <strong>verb phrase</strong>, excluding intervening adverbs?`,
+        options: [
+            "could definitely not have anticipated",
+            "could have anticipated",
+            "definitely not have anticipated",
+            "have anticipated such"
+        ],
+        correct: 1,
+        explanation: "'Definitely' and 'not' are adverbs modifying the verb phrase. The verb phrase itself is 'could have anticipated'."
+    },
+    {
+        id: 22,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases & Auxiliary Verbs",
+        stimulusTitle: "Grammar: Modal Auxiliaries for Necessity",
+        stimulus: `<p>Modal auxiliaries (such as <em>can, must, should, may</em>) express nuances like permission, ability, or requirement.</p>`,
+        prompt: `In the sentence <em>"Monsieur Loisel must repay thirty-six thousand francs to the lenders,"</em> the modal auxiliary <u>must</u> conveys:`,
+        options: [
+            "Future probability",
+            "Past possibility",
+            "Obligation or absolute necessity",
+            "Permission"
+        ],
+        correct: 2,
+        explanation: "'Must' is a modal auxiliary verb denoting strict necessity or compelling obligation."
+    },
+    {
+        id: 23,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases & Auxiliary Verbs",
+        stimulusTitle: "Grammar: Forms of 'Have' as Auxiliaries",
+        stimulus: `<p class="italic text-slate-700">"No NASCAR champion has earned more lifetime victories than Richard Petty."</p>`,
+        prompt: `Which statement accurately describes the verb structure in the sentence above?`,
+        options: [
+            "It has a single intransitive action verb 'earned'.",
+            "It contains the verb phrase 'has earned', combining an auxiliary form of have with a past participle.",
+            "It contains a linking verb 'has' and a predicate noun 'victories'.",
+            "It contains no auxiliary verbs."
+        ],
+        correct: 1,
+        explanation: "'Has' is the auxiliary verb combining with the past participle 'earned' to form the present perfect verb phrase 'has earned'."
+    },
+    {
+        id: 24,
+        type: "mcq",
+        domain: "Grammar: Lesson 7",
+        topic: "Verb Phrases & Auxiliary Verbs",
+        stimulusTitle: "Grammar: Auxiliary vs. Main Verb Distinctions",
+        stimulus: `<p>Sentence A: <em>She had a beautiful satin gown for the event.</em><br>
+                   Sentence B: <em>She had purchased a beautiful satin gown for the event.</em></p>`,
+        prompt: `How does the function of the word <strong>had</strong> differ between Sentence A and Sentence B?`,
+        options: [
+            "In A, 'had' is an auxiliary verb; in B, 'had' is the main action verb.",
+            "In A, 'had' is the main action verb; in B, 'had' is an auxiliary verb helping 'purchased'.",
+            "In both sentences, 'had' is an auxiliary verb.",
+            "In both sentences, 'had' is a linking verb."
+        ],
+        correct: 1,
+        explanation: "In A, 'had' stands alone as the main transitive verb (meaning possessed). In B, 'had' is an auxiliary helping the main verb 'purchased'."
+    },
+
+    // ----------------------------------------------------
+    // VOCABULARY WORKSHOP (20 TARGET WORDS) - 10 MCQs (Q25 - Q34)
+    // ----------------------------------------------------
+    {
+        id: 25,
+        type: "mcq",
+        domain: "Craft and Structure",
+        topic: "Vocabulary: Words in Context",
+        stimulusTitle: "Context Vocabulary: Legal & Civic Context",
+        stimulus: `<p class="italic text-slate-700">"Due to the late hour and severe winter storm knocking out electricity in the courthouse, the magistrate announced that proceedings would ________ until nine o'clock the following morning."</p>`,
+        prompt: `Which word from your vocabulary list best completes the sentence?`,
+        options: [
+            "adjourn",
+            "proliferate",
+            "subjugate",
+            "sully"
+        ],
+        correct: 0,
+        explanation: "'Adjourn' means to suspend or close a meeting or court session until another time."
+    },
+    {
+        id: 26,
+        type: "mcq",
+        domain: "Craft and Structure",
+        topic: "Vocabulary: Words in Context",
+        stimulusTitle: "Context Vocabulary: Military Engineering",
+        stimulus: `<p class="italic text-slate-700">"Before the enemy battalion reached the valley, the garrison worked through the night to ________ the stone outpost with earthen berms and reinforced timber."</p>`,
+        prompt: `Which vocabulary word best fits the blank?`,
+        options: [
+            "jeer",
+            "compensate",
+            "fortify",
+            "tantalize"
+        ],
+        correct: 2,
+        explanation: "'Fortify' means to strengthen a place with defensive works so as to protect it against attack."
+    },
+    {
+        id: 27,
+        type: "mcq",
+        domain: "Craft and Structure",
+        topic: "Vocabulary: Words in Context",
+        stimulusTitle: "Context Vocabulary: Handwriting & Deciphering",
+        stimulus: `<p class="italic text-slate-700">"The ancient scholar's notes had faded with age and water damage, rendering the cursive script almost entirely ________ even under a magnifying glass."</p>`,
+        prompt: `Which word correctly describes writing that cannot be deciphered or read?`,
+        options: [
+            "terse",
+            "illegible",
+            "comely",
+            "lucrative"
+        ],
+        correct: 1,
+        explanation: "'Illegible' means impossible or extremely difficult to read because of bad handwriting or damage."
+    },
+    {
+        id: 28,
+        type: "mcq",
+        domain: "Craft and Structure",
+        topic: "Vocabulary: Words in Context",
+        stimulusTitle: "Context Vocabulary: Deceptive Tactics",
+        stimulus: `<p class="italic text-slate-700">"The fencing champion executed a subtle ________ with his foil to the upper right shoulder, tricking his opponent into parrying high before lunging into the open chest."</p>`,
+        prompt: `Which vocabulary word signifies a deceptive or mock attack designed to distract an opponent?`,
+        options: [
+            "feint",
+            "fodder",
+            "expulsion",
+            "alien"
+        ],
+        correct: 0,
+        explanation: "'Feint' is a mock blow or attack on or toward one part in order to distract attention from the intended point of attack."
+    },
+    {
+        id: 29,
+        type: "mcq",
+        domain: "Craft and Structure",
+        topic: "Vocabulary: Words in Context",
+        stimulusTitle: "Context Vocabulary: Biological & Social Expansion",
+        stimulus: `<p class="italic text-slate-700">"In the damp, unventilated warmth of the cellar, toxic black mold began to ________ rapidly across the wooden support beams."</p>`,
+        prompt: `Which vocabulary word denotes reproducing, multiplying, or increasing rapidly?`,
+        options: [
+            "adjourn",
+            "proliferate",
+            "subjugate",
+            "compensate"
+        ],
+        correct: 1,
+        explanation: "'Proliferate' means to increase rapidly in numbers or multiply."
+    },
+    {
+        id: 30,
+        type: "mcq",
+        domain: "Craft and Structure",
+        topic: "Vocabulary: Words in Context",
+        stimulusTitle: "Context Vocabulary: Restitution & Repayment",
+        stimulus: `<p class="italic text-slate-700">"The airline provided hotel vouchers and monetary credits to ________ passengers who had been stranded overnight by the flight cancellation."</p>`,
+        prompt: `Which word represents reimbursing or making suitable amends for loss or suffering?`,
+        options: [
+            "tantalize",
+            "compensate",
+            "sully",
+            "jeer"
+        ],
+        correct: 1,
+        explanation: "'Compensate' means to pay someone to make up for effort, loss, or inconvenience."
+    },
+    {
+        id: 31,
+        type: "mcq",
+        domain: "Craft and Structure",
+        topic: "Vocabulary: Words in Context",
+        stimulusTitle: "Context Vocabulary: Steadfast Determination",
+        stimulus: `<p class="italic text-slate-700">"The young firefighter stepped into the smoke-filled corridor with ________ resolve, never hesitating even as the flames roared along the ceiling."</p>`,
+        prompt: `Which word best describes bravery that does not flinch, waver, or retreat in the face of peril?`,
+        options: [
+            "unflinching",
+            "erratic",
+            "mediocre",
+            "dissolute"
+        ],
+        correct: 0,
+        explanation: "'Unflinching' means not showing fear or hesitation in the face of danger or difficulty; steadfast."
+    },
+    {
+        id: 32,
+        type: "mcq",
+        domain: "Craft and Structure",
+        topic: "Vocabulary: Words in Context",
+        stimulusTitle: "Context Vocabulary: Commercial Prosperity",
+        stimulus: `<p class="italic text-slate-700">"Securing the patent for the new solar energy converter proved to be an exceptionally ________ venture, yielding millions in quarterly profits."</p>`,
+        prompt: `Which word means producing a great deal of profit or monetary gain?`,
+        options: [
+            "comely",
+            "lucrative",
+            "terse",
+            "alien"
+        ],
+        correct: 1,
+        explanation: "'Lucrative' means producing a great deal of profit or wealth."
+    },
+    {
+        id: 33,
+        type: "mcq",
+        domain: "Craft and Structure",
+        topic: "Vocabulary: Words in Context",
+        stimulusTitle: "Context Vocabulary: Concision in Communication",
+        stimulus: `<p class="italic text-slate-700">"Known for his no-nonsense attitude, the commanding officer sent a ________ telegram containing only two words: 'Attack immediately.'"</p>`,
+        prompt: `Which vocabulary term means sparing in the use of words; abrupt and concise?`,
+        options: [
+            "terse",
+            "dissolute",
+            "mediocre",
+            "erratic"
+        ],
+        correct: 0,
+        explanation: "'Terse' means sparing in the use of words; concise and often abrupt."
+    },
+    {
+        id: 34,
+        type: "mcq",
+        domain: "Craft and Structure",
+        topic: "Vocabulary: Words in Context",
+        stimulusTitle: "Context Vocabulary: Reputation & Honor",
+        stimulus: `<p class="italic text-slate-700">"The candidate vowed that no underhanded campaign tactics would ________ the integrity of her family’s unblemished reputation."</p>`,
+        prompt: `Which word means to damage the purity or integrity of; to defile, stain, or tarnish?`,
+        options: [
+            "fortify",
+            "subjugate",
+            "sully",
+            "adjourn"
+        ],
+        correct: 2,
+        explanation: "'Sully' means to damage the purity or integrity of; defile, tarnish, or soil."
+    },
+
+    // ----------------------------------------------------
+    // READING COMPREHENSION: THE NECKLACE - 10 MCQs (Q35 - Q44)
+    // ----------------------------------------------------
+    {
+        id: 35,
+        type: "mcq",
+        domain: "Information and Ideas",
+        topic: "Reading: The Necklace",
+        stimulusTitle: "Passage Excerpt: Mathilde Loisel's Internal Conflict",
+        stimulus: `<p class="italic">"She suffered ceaselessly, feeling herself born to enjoy all delicacies and all luxuries. She was distressed at the poverty of her dwelling, at the bareness of the walls, at the shabby chairs, the ugliness of the curtains. All those things, of which another woman of her rank would never even have been conscious, tortured her and made her angry... She thought of silent antechambers hung with Oriental tapestry, illumined by tall bronze candelabra..."</p>`,
+        prompt: `Based on the opening passage, what is the primary source of Mathilde's enduring grief?`,
+        options: [
+            "She is mistreated by her hard-working husband.",
+            "She feels trapped in a humble clerk's household while believing she is destined for high-society luxury and admiration.",
+            "She has lost her family's vast aristocratic estate in a financial scandal.",
+            "She suffers from a severe physical ailment that prevents her from leaving Paris."
+        ],
+        correct: 1,
+        explanation: "The narrator explicitly explains that Mathilde feels born 'as if by a slip of fate' into a clerk's family, torturing herself over humble furnishings while dreaming of aristocratic opulence."
+    },
+    {
+        id: 36,
+        type: "mcq",
+        domain: "Information and Ideas",
+        topic: "Reading: The Necklace",
+        stimulusTitle: "Passage Excerpt: The Ministry Invitation",
+        stimulus: `<p class="italic">"Instead of being delighted, as her husband had hoped, she threw the invitation on the table crossly, muttering:<br>
+                   'What do you wish me to do with that?'<br>
+                   'Why, my dear, I thought you would be glad. You never go out, and this is such a fine opportunity. I had great trouble to get it... The whole official world will be there.'"</p>`,
+        prompt: `What causes Mathilde's immediate resentment when presented with the invitation to the Ministry ball?`,
+        options: [
+            "She despises the Minister of Public Instruction and his wife.",
+            "She has no opulent evening gown and fears looking impoverished among wealthy elites.",
+            "She believes the invitation was meant for someone else.",
+            "She prefers staying at home to host her own intimate dinner."
+        ],
+        correct: 1,
+        explanation: "She snaps at her husband because she lacks an expensive ball gown, crying: 'And what do you wish me to put on my back?'"
+    },
+    {
+        id: 37,
+        type: "mcq",
+        domain: "Information and Ideas",
+        topic: "Reading: The Necklace",
+        stimulusTitle: "Character Analysis: Monsieur Loisel's Sacrifice",
+        stimulus: `<p class="italic">"He grew a little pale, because he was laying aside just that amount to buy a gun and treat himself to a little shooting next summer on the plain of Nanterre, with several friends who went to shoot larks there of a Sunday. But he said: 'Very well. I will give you four hundred francs. And try to have a pretty gown.'"</p>`,
+        prompt: `What does this passage reveal about Monsieur Loisel's character?`,
+        options: [
+            "He is cold, calculating, and manipulative with his finances.",
+            "He is deeply devoted and willing to surrender his own personal recreation for his wife's happiness.",
+            "He encourages his wife's excessive vanity to advance his career at the ministry.",
+            "He is careless with money and indifferent to the household budget."
+        ],
+        correct: 1,
+        explanation: "Monsieur Loisel selflessly sacrifices his hard-earned savings intended for a hunting gun so that Mathilde can purchase her desired gown."
+    },
+    {
+        id: 38,
+        type: "mcq",
+        domain: "Information and Ideas",
+        topic: "Reading: The Necklace",
+        stimulusTitle: "Passage Excerpt: Borrowing the Jewels",
+        stimulus: `<p class="italic">"Suddenly she discovered, in a black satin box, a superb diamond necklace, and her heart throbbed with an immoderate desire. Her hands trembled as she took it. She fastened it round her throat, outside her high-necked waist, and was lost in ecstasy at her reflection in the mirror... 'Will you lend me this, only this?' 'Why, yes, certainly.'"</p>`,
+        prompt: `In this scene, Maupassant highlights Mathilde's emotional state using the phrase <em>"immoderate desire."</em> What theme is underscored here?`,
+        options: [
+            "The virtue of modest moderation.",
+            "Her uncontrollable obsession with material prestige and external vanity.",
+            "Her profound artistic appreciation for goldsmith craftsmanship.",
+            "Her generosity toward Madame Forestier."
+        ],
+        correct: 1,
+        explanation: "Her trembling hands and 'immoderate desire' underscore her overwhelming, insatiable obsession with outward symbols of wealth and high status."
+    },
+    {
+        id: 39,
+        type: "mcq",
+        domain: "Information and Ideas",
+        topic: "Reading: The Necklace",
+        stimulusTitle: "Passage Excerpt: The Triumphant Ball",
+        stimulus: `<p class="italic">"Madame Loisel was a great success. She was prettier than any other woman present, elegant, graceful, smiling and wild with joy. All the men looked at her, asked her name, sought to be introduced... She danced with rapture, with passion, intoxicated by pleasure, forgetting all in the triumph of her beauty..."</p>`,
+        prompt: `Why is the night of the ball the absolute pinnacle of Mathilde's life?`,
+        options: [
+            "She wins a prestigious civic award from the Minister.",
+            "She secures a wealthy suitor who promises to take her away.",
+            "She receives the exact intoxicating admiration, envy, and attention she always believed was her birthright.",
+            "She reconciles with her former convent teachers."
+        ],
+        correct: 2,
+        explanation: "The ball fulfills her lifelong fantasy: she is adored, envied, and sought after by everyone in the room, creating an intoxicating cloud of triumph."
+    },
+    {
+        id: 40,
+        type: "mcq",
+        domain: "Information and Ideas",
+        topic: "Reading: The Necklace",
+        stimulusTitle: "Passage Excerpt: Fleeing into the Cold",
+        stimulus: `<p class="italic">"He threw over her shoulders the wraps he had brought, the modest wraps of common life, the poverty of which contrasted with the elegance of the ball dress. She felt this and wished to escape so as not to be remarked by the other women, who were enveloping themselves in costly furs."</p>`,
+        prompt: `Why does Mathilde rush hastily out of the palace into the freezing Parisian night at 4:00 AM?`,
+        options: [
+            "Her husband insists that he must report to work immediately.",
+            "She has already realized that the necklace is missing.",
+            "She is terrified that wealthy women in furs will see her cheap, everyday coat and perceive her poverty.",
+            "She wants to beat the morning traffic back to the Rue des Martyrs."
+        ],
+        correct: 2,
+        explanation: "Her overwhelming dread of being exposed as poor causes her to flee into the cold to prevent other women from seeing her shabby wraps."
+    },
+    {
+        id: 41,
+        type: "mcq",
+        domain: "Information and Ideas",
+        topic: "Reading: The Necklace",
+        stimulusTitle: "Passage Excerpt: The Dreadful Loss",
+        stimulus: `<p class="italic">"She removed her wraps before the glass so as to see herself once more in all her glory. But suddenly she uttered a cry. She no longer had the necklace around her neck!... They looked among the folds of her skirt, of her cloak, in her pockets, everywhere, but did not find it."</p>`,
+        prompt: `What fatal decision do the Loisels make following the unsuccessful police and cab searches?`,
+        options: [
+            "They confess the loss immediately to Madame Forestier and offer an honest apology.",
+            "They concoct a lie about a broken clasp to stall for time, resolving to replace the necklace in secret rather than admit the truth.",
+            "They accuse the night cab driver in public court.",
+            "They flee Paris to avoid being prosecuted for theft."
+        ],
+        correct: 1,
+        explanation: "Rather than admit the truth, their pride forces them to lie about a broken clasp to buy time while they attempt to secretly replace it."
+    },
+    {
+        id: 42,
+        type: "mcq",
+        domain: "Information and Ideas",
+        topic: "Reading: The Necklace",
+        stimulusTitle: "Passage Excerpt: Ruinous Debt & Labor",
+        stimulus: `<p class="italic">"Loisel possessed eighteen thousand francs which his father had left him. He would borrow the rest. He did borrow, asking a thousand francs of one, five hundred of another... He compromised all the rest of his life, risked signing a note without even knowing whether he could meet it... laying upon the jeweler's counter thirty-six thousand francs."</p>`,
+        prompt: `How do the Loisels finance the 36,000-franc replacement necklace?`,
+        options: [
+            "The Ministry loans them the funds at zero interest.",
+            "Monsieur Loisel uses his complete 18,000-franc paternal inheritance and borrows the remaining 18,000 from usurers at catastrophic interest.",
+            "Madame Loisel pawns all her furniture and heirlooms in one afternoon.",
+            "Madame Forestier agrees to a partial payment plan."
+        ],
+        correct: 1,
+        explanation: "Loisel uses his entire inheritance of 18,000 francs left by his father and enters into ruinous obligations with moneylenders for the other 18,000 francs."
+    },
+    {
+        id: 43,
+        type: "mcq",
+        domain: "Information and Ideas",
+        topic: "Reading: The Necklace",
+        stimulusTitle: "Passage Excerpt: Mathilde's Physical Transformation",
+        stimulus: `<p class="italic">"Madame Loisel looked old now. She had become the woman of impoverished households—strong and hard and rough. With frowsy hair, skirts askew and red hands, she talked loud while washing the floor with great swishes of water... This life lasted ten years."</p>`,
+        prompt: `What contrast is created between Mathilde at the start of the story and Mathilde after ten years of debt?`,
+        options: [
+            "She was formerly strong and resilient; now she is fragile and timid.",
+            "She was formerly delicate, self-pitying, and luxurious; now she is physically weathered, hardened, and familiar with rough manual labor.",
+            "She has become an elite society matron living in Nanterre.",
+            "She has abandoned all work and relies entirely on charity."
+        ],
+        correct: 1,
+        explanation: "Maupassant contrasts the pampered, delicate beauty of the opening with the coarse, loud, rough-handed, and weathered working-class woman she becomes."
+    },
+    {
+        id: 44,
+        type: "mcq",
+        domain: "Information and Ideas",
+        topic: "Reading: The Necklace",
+        stimulusTitle: "Passage Excerpt: The Climactic Twist",
+        stimulus: `<p class="italic">"Madame Forestier, deeply moved, took her hands.<br>
+                   'Oh, my poor Mathilde! Why, my necklace was paste! It was worth at most only five hundred francs!'"</p>`,
+        prompt: `The conclusion of the story presents a supreme example of <strong>situational irony</strong> because:`,
+        options: [
+            "Madame Forestier had stolen the original necklace herself.",
+            "The Loisels endured a decade of soul-crushing poverty to replace a necklace they thought was a treasure, only to learn it was worthless costume jewelry.",
+            "Mathilde never actually lost the original necklace.",
+            "Monsieur Loisel had known the truth all along and kept it a secret."
+        ],
+        correct: 1,
+        explanation: "Situational irony occurs when the outcome contradicts expectations: the Loisels destroyed their lives to buy real diamonds to replace an ornament that was only cheap glass paste."
+    },
+
+    // ----------------------------------------------------
+    // CONSTRUCTED SHORT ANSWER RESPONSES - 3 PROMPTS (Q45 - Q47)
+    // ----------------------------------------------------
+    {
+        id: 45,
+        type: "shortAnswer",
+        domain: "Written Literary Analysis",
+        topic: "The Necklace: Character & Pride",
+        stimulusTitle: "Constructed Analysis: Character Motivation & Deception",
+        stimulus: `<p class="italic text-slate-700">"When Madame Loisel took back the necklace Madame Forestier said to her with a chilly manner: 'You should have returned it sooner; I might have needed it.' She did not open the case, as her friend had so much feared. If she had detected the substitution, what would she have thought, what would she have said? Would she not have taken Madame Loisel for a thief?"</p>`,
+        prompt: `<strong>Analysis Prompt 1 (Character Motivation):</strong> Why does Mathilde refuse to admit to Madame Forestier that she lost the necklace? What does this choice reveal about the destructive role of false pride in the story?`,
+        rubric: "Evaluates recognition of Mathilde's terror of social degradation, fear of being branded a thief, and how excessive hubris prevents an honest dialogue that would have revealed the truth immediately.",
+        modelAnswer: "Mathilde refuses to confess the loss to Madame Forestier because of her overwhelming pride and paralyzing dread of social humiliation. To admit that she lost a loaned diamond necklace would shatter the illusion of refinement she sought to project and expose her to accusations of negligence or outright theft. This decision demonstrates how false pride drives individuals to destructive dishonesty: rather than suffering a moment of embarrassing truth—which would have instantly revealed that the necklace was worth merely five hundred francs—Mathilde and her husband condemn themselves to ten years of agonizing financial slavery."
+    },
+    {
+        id: 46,
+        type: "shortAnswer",
+        domain: "Written Literary Analysis",
+        topic: "The Necklace: Irony & Theme",
+        stimulusTitle: "Constructed Analysis: Appearance vs. Reality",
+        stimulus: `<p class="italic text-slate-700">"What would have happened if she had not lost that necklace? Who knows? who knows? How strange and changeful is life! How small a thing is needed to make or ruin us!"</p>`,
+        prompt: `<strong>Analysis Prompt 2 (Irony and Theme):</strong> Analyze how Guy de Maupassant uses the diamond necklace as a central symbol to comment on the deceptive nature of appearances in French 19th-century society.`,
+        rubric: "Analyzes symbolism: the paste necklace symbolizes the superficiality of high society—dazzling on the outside, hollow and synthetic on the inside. Connects this to the theme that pursuing hollow prestige leads to real suffering.",
+        modelAnswer: "In 'The Necklace', Maupassant uses the diamond necklace as a potent symbol for the glittering yet fraudulent nature of high-society status. Just as the necklace appears to be an invaluable work of authentic jewelry while being nothing more than cheap paste, the aristocratic world Mathilde idolizes is built upon superficial appearances rather than genuine worth. Mathilde stakes her self-worth and happiness upon this false illusion, demonstrating Maupassant's theme that prioritizing social pretension over authentic reality leads to catastrophe and bitter regret."
+    },
+    {
+        id: 47,
+        type: "shortAnswer",
+        domain: "Written Literary Analysis",
+        topic: "The Necklace: Dynamic Character Change",
+        stimulusTitle: "Constructed Analysis: Character Growth & 'Sudden Heroism'",
+        stimulus: `<p class="italic text-slate-700">"Thereafter Madame Loisel knew the horrible existence of the needy. She bore her part, however, with sudden heroism. That dreadful debt must be paid. She would pay it. They dismissed their servant; they changed their lodgings; they rented a garret under the roof."</p>`,
+        prompt: `<strong>Analysis Prompt 3 (Character Evolution):</strong> Did Mathilde Loisel undergo any positive moral development as a result of her financial downfall? Use specific evidence from the text to justify your conclusion.`,
+        rubric: "Considers her transition from passive complaining to active labor; cites Maupassant's phrase 'sudden heroism'; balances her loss of youth with her steadfast determination to pay every single sou of the debt.",
+        modelAnswer: "Despite the tragedy of her circumstances, Mathilde demonstrates significant moral resilience and maturity during the ten years of repayment. Whereas she began the story as a self-pitying, idle daydreamer who wept incessantly over modest curtains and ordinary soup, she faces real poverty with what Maupassant calls 'sudden heroism.' She does not abandon her husband or evade responsibility; instead, she dismisses the servant, rents an attic garret, scrubs greasy pots with reddened hands, and defends their money sou by sou. Although hardened physically, she displays an authentic inner strength and work ethic that was completely absent during her days of petty vanity."
+    }
+];
+
+let currentQuestionIndex = 0;
+let userAnswers = {}; // { questionId: selectedIndex or text }
+let flaggedQuestions = new Set();
+let examStarted = false;
+let examSubmitted = false;
+let timerSeconds = 55 * 60; // 55 minutes
+let timerInterval = null;
+let timerHidden = false;
+
+// Student Candidate Info Object
+let studentProfile = {
+    name: "Candidate",
+    id: "2026-ENG9",
+    grade: "Grade 9 - A",
+    date: new Date().toISOString().split('T')[0],
+    testCode: "SESSION-ELA-9F"
+};
+
+function startExam(e) {
+    if (e) e.preventDefault();
+
+    const nameInput = document.getElementById("studentName").value.trim();
+    const idInput = document.getElementById("studentId").value.trim();
+    const classInput = document.getElementById("gradeSection").value.trim();
+    const dateInput = document.getElementById("examDate").value || new Date().toISOString().split('T')[0];
+    const codeInput = document.getElementById("testCode").value.trim();
+
+    if (!nameInput || !idInput || !classInput) {
+        return;
+    }
+
+    studentProfile.name = nameInput;
+    studentProfile.id = idInput;
+    studentProfile.grade = classInput;
+    studentProfile.date = dateInput;
+    studentProfile.testCode = codeInput;
+
+    document.getElementById("headerCandidateName").textContent = `Candidate: ${studentProfile.name} (${studentProfile.id})`;
+
+    // Transition Views
+    document.getElementById("loginView").classList.add("hidden");
+    document.getElementById("testView").classList.remove("hidden");
+
+    examStarted = true;
+    startTimer();
+    renderCurrentQuestion();
+    updateReviewPaletteGrid();
+}
+
+// Timer Functions
+function startTimer() {
+    updateTimerDisplay();
+    timerInterval = setInterval(() => {
+        if (timerSeconds > 0) {
+            timerSeconds--;
+            updateTimerDisplay();
+        } else {
+            clearInterval(timerInterval);
+            submitExamNow();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const mins = Math.floor(timerSeconds / 60);
+    const secs = timerSeconds % 60;
+    const formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    const displayEl = document.getElementById("timerDisplay");
+    if (displayEl) {
+        displayEl.textContent = formatted;
+        if (timerSeconds < 300) { // under 5 min
+            displayEl.classList.add("text-rose-600");
+        }
+    }
+}
+
+function toggleTimerVisibility() {
+    timerHidden = !timerHidden;
+    const displayEl = document.getElementById("timerDisplay");
+    const toggleBtn = document.getElementById("timerToggleBtn");
+    if (timerHidden) {
+        displayEl.classList.add("hidden");
+        toggleBtn.textContent = "Show";
+    } else {
+        displayEl.classList.remove("hidden");
+        toggleBtn.textContent = "Hide";
+    }
+}
+
+function renderCurrentQuestion() {
+    const q = examQuestions[currentQuestionIndex];
+    if (!q) return;
+
+    // Left Panel Updates
+    document.getElementById("domainBadge").textContent = q.domain;
+    document.getElementById("questionTopicIndicator").textContent = `Item ${q.id} of ${examQuestions.length}`;
+    document.getElementById("stimulusTitle").textContent = q.stimulusTitle;
+    document.getElementById("stimulusContent").innerHTML = q.stimulus;
+    document.getElementById("headerSectionIndicator").textContent = q.topic;
+
+    // Right Panel Updates
+    document.getElementById("itemNumberTag").textContent = q.id;
+    document.getElementById("bottomQuestionTracker").textContent = `${q.id} of ${examQuestions.length}`;
+    document.getElementById("questionPrompt").innerHTML = q.prompt;
+
+    // Flag button state
+    updateFlagButtonState();
+
+    // Render Options or Textarea
+    const container = document.getElementById("interactionContainer");
+    const feedbackBox = document.getElementById("questionFeedback");
+    feedbackBox.classList.add("hidden");
+
+    if (q.type === "mcq") {
+        let html = "";
+        const letters = ["A", "B", "C", "D"];
+        const currentAnswer = userAnswers[q.id];
+
+        q.options.forEach((opt, idx) => {
+            const letter = letters[idx];
+            const isSelected = currentAnswer === idx;
+            let borderClass = isSelected ? "border-cb-blue bg-blue-50/70 text-cb-navy shadow-sm ring-1 ring-cb-blue" : "border-slate-200 bg-white hover:bg-slate-50 text-slate-800";
+            
+            // Highlight in Review mode after submission
+            if (examSubmitted) {
+                if (idx === q.correct) {
+                    borderClass = "border-emerald-500 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-500 font-semibold";
+                } else if (isSelected && idx !== q.correct) {
+                    borderClass = "border-rose-400 bg-rose-50 text-rose-900";
+                }
+            }
+
+            html += `
+            <div onclick="selectOption(${idx})" class="flex items-start gap-3.5 p-3.5 rounded-xl border ${borderClass} cursor-pointer transition-all duration-150">
+                <div class="w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${isSelected ? 'bg-cb-blue text-white border-cb-blue' : 'bg-slate-100 text-slate-600 border-slate-300'}">
+                    ${letter}
+                </div>
+                <div class="text-sm leading-snug pt-0.5">${opt}</div>
+            </div>
+            `;
+        });
+        container.innerHTML = html;
+
+        // Feedback in Review mode after submission
+        if (examSubmitted) {
+            feedbackBox.classList.remove("hidden");
+            const isCorrect = currentAnswer === q.correct;
+            feedbackBox.className = `mt-6 p-4 rounded-xl text-xs leading-relaxed border ${isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900'}`;
+            feedbackBox.innerHTML = `
+                <div class="font-bold mb-1">${isCorrect ? '✓ Correct Answer Selected' : '✗ Official Correct Key: Option ' + letters[q.correct]}</div>
+                <p>${q.explanation}</p>
+            `;
+        }
+    } else if (q.type === "shortAnswer") {
+        const val = userAnswers[q.id] || "";
+        container.innerHTML = `
+            <div class="space-y-3">
+                <textarea id="saInput_${q.id}" oninput="saveShortAnswer(this.value)" rows="6" placeholder="Type your analytical response here (minimum 3-5 sentences with text evidence)..."
+                    class="w-full p-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-cb-blue text-sm text-slate-800 leading-relaxed font-sans" ${examSubmitted ? 'readonly' : ''}>${val}</textarea>
+                <div class="flex items-center justify-between text-xs text-slate-500">
+                    <span>Target Word Count: 60–120 words</span>
+                    <span>Evaluation: Textual Evidence & Reasoning</span>
+                </div>
+            </div>
+        `;
+
+        if (examSubmitted) {
+            feedbackBox.classList.remove("hidden");
+            feedbackBox.className = "mt-5 p-4 rounded-xl text-xs leading-relaxed bg-blue-50 border border-blue-200 text-slate-800 space-y-2";
+            feedbackBox.innerHTML = `
+                <div><strong class="text-cb-navy uppercase font-bold text-[10px] tracking-wider">Evaluation Rubric:</strong> ${q.rubric}</div>
+                <div class="mt-2 pt-2 border-t border-blue-200"><strong class="text-cb-navy">Exemplar Benchmark Response:</strong><br>${q.modelAnswer}</div>
+            `;
+        }
+    }
+
+    // Navigation button updates
+    document.getElementById("prevBtn").disabled = (currentQuestionIndex === 0);
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitExamBtn");
+
+    if (currentQuestionIndex === examQuestions.length - 1) {
+        nextBtn.classList.add("hidden");
+        submitBtn.classList.remove("hidden");
+    } else {
+        nextBtn.classList.remove("hidden");
+        submitBtn.classList.add("hidden");
+    }
+
+    updateAnsweredCounter();
+}
+
+function selectOption(index) {
+    if (examSubmitted) return;
+    const q = examQuestions[currentQuestionIndex];
+    userAnswers[q.id] = index;
+    renderCurrentQuestion();
+    updateReviewPaletteGrid();
+}
+
+function saveShortAnswer(val) {
+    const q = examQuestions[currentQuestionIndex];
+    userAnswers[q.id] = val;
+    updateAnsweredCounter();
+    updateReviewPaletteGrid();
+}
+
+function navigateQuestion(offset) {
+    const target = currentQuestionIndex + offset;
+    if (target >= 0 && target < examQuestions.length) {
+        currentQuestionIndex = target;
+        renderCurrentQuestion();
+    }
+}
+
+// Flag / Bookmark handling
+function toggleFlagCurrentQuestion() {
+    const q = examQuestions[currentQuestionIndex];
+    if (flaggedQuestions.has(q.id)) {
+        flaggedQuestions.delete(q.id);
+    } else {
+        flaggedQuestions.add(q.id);
+    }
+    updateFlagButtonState();
+    updateReviewPaletteGrid();
+}
+
+function updateFlagButtonState() {
+    const q = examQuestions[currentQuestionIndex];
+    const flagBtn = document.getElementById("flagBtn");
+    const flagIcon = document.getElementById("flagIcon");
+    const flagText = document.getElementById("flagText");
+
+    if (flaggedQuestions.has(q.id)) {
+        flagBtn.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-300 text-xs font-semibold bg-amber-50 text-amber-700 shadow-sm";
+        flagIcon.classList.replace("text-slate-400", "text-amber-500");
+        flagIcon.setAttribute("fill", "currentColor");
+        flagText.textContent = "Bookmarked";
+    } else {
+        flagBtn.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold text-slate-600 hover:bg-white hover:text-amber-600 transition shadow-sm";
+        flagIcon.classList.replace("text-amber-500", "text-slate-400");
+        flagIcon.setAttribute("fill", "none");
+        flagText.textContent = "Mark for Review";
+    }
+}
+
+function updateAnsweredCounter() {
+    let count = 0;
+    examQuestions.forEach(q => {
+        if (q.type === "mcq" && userAnswers[q.id] !== undefined) count++;
+        else if (q.type === "shortAnswer" && (userAnswers[q.id] || "").trim().length > 0) count++;
+    });
+    document.getElementById("answeredCounter").textContent = count;
+}
+
+function openReviewGrid() {
+    updateReviewPaletteGrid();
+    document.getElementById("reviewModal").classList.remove("hidden");
+}
+
+function closeReviewGrid() {
+    document.getElementById("reviewModal").classList.add("hidden");
+}
+
+function jumpToQuestion(index) {
+    currentQuestionIndex = index;
+    renderCurrentQuestion();
+    closeReviewGrid();
+}
+
+function updateReviewPaletteGrid() {
+    const container = document.getElementById("paletteSectionsContainer");
+    if (!container) return;
+
+    // Define grouping of 47 questions
+    const sections = [
+        { name: "Topic 1: Transitive & Intransitive Verbs (Items 1–8)", start: 0, end: 8 },
+        { name: "Topic 2: Linking Verbs & Complements (Items 9–16)", start: 8, end: 16 },
+        { name: "Topic 3: Verb Phrases & Auxiliary (Helping) Verbs (Items 17–24)", start: 16, end: 24 },
+        { name: "Vocabulary Workshop: Words in Context (Items 25–34)", start: 24, end: 34 },
+        { name: "Reading: 'The Necklace' MCQs (Items 35–44)", start: 34, end: 44 },
+        { name: "Constructed Analysis: Short Answers (Items 45–47)", start: 44, end: 47 }
+    ];
+
+    let html = "";
+    sections.forEach(sec => {
+        html += `
+        <div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2.5">${sec.name}</h4>
+            <div class="grid grid-cols-8 sm:grid-cols-10 gap-2">
+        `;
+        for (let i = sec.start; i < sec.end; i++) {
+            const q = examQuestions[i];
+            const isCurrent = (i === currentQuestionIndex);
+            const isFlagged = flaggedQuestions.has(q.id);
+            const isAnswered = (q.type === "mcq" && userAnswers[q.id] !== undefined) ||
+                               (q.type === "shortAnswer" && (userAnswers[q.id] || "").trim().length > 0);
+
+            let btnClass = "bg-white border-slate-300 text-slate-700 hover:bg-slate-100";
+            if (isAnswered) btnClass = "bg-emerald-50 border-emerald-400 text-emerald-800 font-bold";
+            if (isCurrent) btnClass = "bg-cb-blue text-white border-cb-blue font-extrabold ring-2 ring-blue-300";
+
+            html += `
+            <button onclick="jumpToQuestion(${i})" class="h-10 rounded-lg border text-xs font-semibold relative flex items-center justify-center transition shadow-sm ${btnClass}">
+                ${q.id}
+                ${isFlagged ? '<span class="absolute -top-1.5 -right-1 text-amber-500 text-xs">★</span>' : ''}
+            </button>
+            `;
+        }
+        html += `</div></div>`;
+    });
+
+    container.innerHTML = html;
+}
+
+// Confirmation Modals
+function confirmSubmitModal() {
+    let unansweredCount = 0;
+    examQuestions.forEach(q => {
+        if (q.type === "mcq" && userAnswers[q.id] === undefined) unansweredCount++;
+        else if (q.type === "shortAnswer" && (!userAnswers[q.id] || userAnswers[q.id].trim().length === 0)) unansweredCount++;
+    });
+
+    const warningEl = document.getElementById("unansweredWarningText");
+    if (unansweredCount > 0) {
+        warningEl.innerHTML = `You have <strong class="text-rose-600">${unansweredCount} unanswered questions</strong>. Are you sure you wish to submit and finalize your score?`;
+    } else {
+        warningEl.textContent = "All 47 questions have been answered. You are ready to score your exam.";
+    }
+    document.getElementById("confirmSubmitDialog").classList.remove("hidden");
+}
+
+function closeConfirmModal() {
+    document.getElementById("confirmSubmitDialog").classList.add("hidden");
+}
+
+function submitExamNow() {
+    closeConfirmModal();
+    closeReviewGrid();
+    clearInterval(timerInterval);
+    examSubmitted = true;
+    generateDiagnosticReport();
+}
+
+function generateDiagnosticReport() {
+    // Hide Test View, Show Report View
+    document.getElementById("testView").classList.add("hidden");
+    document.getElementById("reportView").classList.remove("hidden");
+
+    // Populate Student Meta
+    document.getElementById("repStudentName").textContent = studentProfile.name;
+    document.getElementById("repStudentId").textContent = studentProfile.id;
+    document.getElementById("repGradeSection").textContent = studentProfile.grade;
+    document.getElementById("repDate").textContent = studentProfile.date;
+
+    // Calculate Scores for MCQs (Total 44)
+    let totalCorrectMCQ = 0;
+    const domains = {
+        "Grammar 1 (Action Verbs)": { correct: 0, total: 8 },
+        "Grammar 2 (Linking Verbs)": { correct: 0, total: 8 },
+        "Grammar 3 (Auxiliary / Helping Verbs)": { correct: 0, total: 8 },
+        "Vocabulary Workshop": { correct: 0, total: 10 },
+        "Reading: 'The Necklace'": { correct: 0, total: 10 }
+    };
+
+    examQuestions.forEach(q => {
+        if (q.type === "mcq") {
+            const isCorrect = (userAnswers[q.id] === q.correct);
+            if (isCorrect) totalCorrectMCQ++;
+
+            if (q.id <= 8) {
+                if (isCorrect) domains["Grammar 1 (Action Verbs)"].correct++;
+            } else if (q.id <= 16) {
+                if (isCorrect) domains["Grammar 2 (Linking Verbs)"].correct++;
+            } else if (q.id <= 24) {
+                if (isCorrect) domains["Grammar 3 (Auxiliary / Helping Verbs)"].correct++;
+            } else if (q.id <= 34) {
+                if (isCorrect) domains["Vocabulary Workshop"].correct++;
+            } else {
+                if (isCorrect) domains["Reading: 'The Necklace'"].correct++;
+            }
+        }
+    });
+
+    const rawPct = (totalCorrectMCQ / 44) * 100;
+    document.getElementById("repTotalRaw").textContent = totalCorrectMCQ;
+    document.getElementById("repPercentage").textContent = `${rawPct.toFixed(1)}% Raw MCQ Accuracy`;
+
+    // Digital SAT Scaled Score Approximation (200 - 800 scale for 9th grade ELA module)
+    // 200 base + (ratio * 600)
+    const scaledScore = Math.round(200 + ((totalCorrectMCQ / 44) * 600));
+    document.getElementById("repScaledScore").textContent = scaledScore;
+
+    // Benchmark Badge
+    const bBadge = document.getElementById("repBenchmarkBadge");
+    const bDesc = document.getElementById("repBenchmarkDescription");
+    if (scaledScore >= 650) {
+        bBadge.className = "mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
+        bBadge.innerHTML = "<span>✓ College Readiness Benchmark Exceeded</span>";
+        bDesc.textContent = "Demonstrates superior mastery of grammatical conventions, vocabulary precision, and complex literary analysis.";
+    } else if (scaledScore >= 480) {
+        bBadge.className = "mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300";
+        bBadge.innerHTML = "<span>✓ Benchmark Met (Proficient)</span>";
+        bDesc.textContent = "Solid foundational command of grade-level reading and writing conventions; ready for advanced Grade 10 standards.";
+    } else {
+        bBadge.className = "mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300";
+        bBadge.innerHTML = "<span>⚠️ Approaching Benchmark (Needs Review)</span>";
+        bDesc.textContent = "Recommended targeted intervention in verb classification and contextual vocabulary acquisition.";
+    }
+
+    // Render Domain Progress Bars
+    const barContainer = document.getElementById("domainProgressBarsContainer");
+    let barHtml = "";
+    for (const [domName, stats] of Object.entries(domains)) {
+        const pct = Math.round((stats.correct / stats.total) * 100);
+        let color = "bg-cb-blue";
+        if (pct >= 85) color = "bg-emerald-500";
+        else if (pct < 65) color = "bg-amber-500";
+
+        barHtml += `
+        <div>
+            <div class="flex justify-between items-center text-xs mb-1.5">
+                <span class="font-bold text-slate-700">${domName}</span>
+                <span class="font-mono text-slate-500">${stats.correct} / ${stats.total} (${pct}%)</span>
+            </div>
+            <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                <div class="${color} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+            </div>
+        </div>
+        `;
+    }
+    barContainer.innerHTML = barHtml;
+
+    // Render Short Answer Report Items
+    const saContainer = document.getElementById("shortAnswerReportContainer");
+    let saHtml = "";
+    [45, 46, 47].forEach(id => {
+        const q = examQuestions.find(item => item.id === id);
+        const studentText = (userAnswers[id] || "").trim();
+        const wordCount = studentText ? studentText.split(/\s+/).length : 0;
+
+        saHtml += `
+        <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+            <div class="flex justify-between items-start">
+                <span class="font-bold text-xs text-cb-navy">Item ${q.id}: ${q.topic}</span>
+                <span class="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800">${wordCount} words logged</span>
+            </div>
+            <p class="text-xs text-slate-700 font-medium">${q.prompt}</p>
+            <div class="p-3 bg-white rounded-lg border border-slate-200 text-xs text-slate-800 italic">
+                <strong class="text-slate-500 not-italic block text-[10px] uppercase mb-1">Student Submitted Response:</strong>
+                ${studentText || "<span class='text-rose-500'>[No response provided by student]</span>"}
+            </div>
+            <div class="p-3 bg-blue-50/70 rounded-lg border border-blue-100 text-xs text-slate-700 space-y-1.5">
+                <div><strong class="text-cb-navy text-[10px] uppercase tracking-wider">Teacher Scoring Rubric:</strong> ${q.rubric}</div>
+                <div><strong class="text-cb-navy text-[10px] uppercase tracking-wider">Model Benchmark Answer:</strong> ${q.modelAnswer}</div>
+            </div>
+        </div>
+        `;
+    });
+    saContainer.innerHTML = saHtml;
+
+    // Render Review Matrix Table
+    const tableBody = document.getElementById("matrixTableBody");
+    const letters = ["A", "B", "C", "D"];
+    let tableHtml = "";
+
+    examQuestions.forEach((q, idx) => {
+        const userVal = userAnswers[q.id];
+        let outcomeBadge = "";
+        let studentTextDisplay = "--";
+        let keyDisplay = "--";
+
+        if (q.type === "mcq") {
+            const isCorrect = (userVal === q.correct);
+            studentTextDisplay = (userVal !== undefined) ? letters[userVal] : "<span class='text-slate-400'>Omit</span>";
+            keyDisplay = letters[q.correct];
+
+            if (userVal === undefined) {
+                outcomeBadge = `<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-500 font-bold text-[10px]">Unanswered</span>`;
+            } else if (isCorrect) {
+                outcomeBadge = `<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">✓ Correct</span>`;
+            } else {
+                outcomeBadge = `<span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-bold text-[10px]">✗ Incorrect</span>`;
+            }
+        } else {
+            studentTextDisplay = (userVal && userVal.trim().length > 0) ? "Completed" : "<span class='text-slate-400'>Omit</span>";
+            keyDisplay = "Rubric";
+            outcomeBadge = `<span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">Constructed</span>`;
+        }
+
+        tableHtml += `
+        <tr class="hover:bg-slate-50 transition">
+            <td class="p-3 text-center font-bold text-slate-700">${q.id}</td>
+            <td class="p-3 text-slate-600">${q.topic}</td>
+            <td class="p-3 text-center font-bold">${studentTextDisplay}</td>
+            <td class="p-3 text-center font-bold text-cb-blue">${keyDisplay}</td>
+            <td class="p-3 text-center">${outcomeBadge}</td>
+            <td class="p-3 text-center no-print">
+                <button onclick="inspectQuestionFromReport(${idx})" class="text-[11px] font-bold text-cb-blue hover:underline">
+                    View
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+    tableBody.innerHTML = tableHtml;
+}
+
+// Return to Test to Inspect Items
+function inspectQuestionFromReport(index) {
+    document.getElementById("reportView").classList.add("hidden");
+    document.getElementById("testView").classList.remove("hidden");
+    currentQuestionIndex = index;
+    renderCurrentQuestion();
+}
+
+function returnToTestReview() {
+    document.getElementById("reportView").classList.add("hidden");
+    document.getElementById("testView").classList.remove("hidden");
+    renderCurrentQuestion();
+}
+
+// Keyboard shortcuts for SAT navigation
+document.addEventListener("keydown", (e) => {
+    if (!examStarted || examSubmitted) return;
+    if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") return;
+
+    if (e.key === "ArrowRight") {
+        navigateQuestion(1);
+    } else if (e.key === "ArrowLeft") {
+        navigateQuestion(-1);
+    } else if (["a", "b", "c", "d"].includes(e.key.toLowerCase())) {
+        const map = { a: 0, b: 1, c: 2, d: 3 };
+        selectOption(map[e.key.toLowerCase()]);
+    }
+});
+
+// Set default exam date on load
+window.addEventListener("DOMContentLoaded", () => {
+    const d = document.getElementById("examDate");
+    if (d) d.value = new Date().toISOString().split('T')[0];
+});
+</script>
+</body>
+</html>
